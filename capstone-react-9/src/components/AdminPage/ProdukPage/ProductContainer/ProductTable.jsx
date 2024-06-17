@@ -260,13 +260,15 @@ const Product = [
   },
 ];
 
-const url = "https://blueharvest.irvansn.com/v1/products"
+const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const [products, setProducts] = useState()
+  const [products, setProducts] = useState();
+  const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] =
+    useState(false);
 
   const totalPages = Math.ceil(Product.length / itemsPerPage);
 
@@ -281,20 +283,20 @@ const ProductTable = () => {
 
   const fetchProducts = async (token) => {
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
-    
+
     if (!response.ok) {
-      throw new Error('Failed to fetch products');
+      throw new Error("Failed to fetch products");
     }
-  
+
     const products = await response.json();
     return products;
-  }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -303,15 +305,86 @@ const ProductTable = () => {
         const products = await fetchProducts(token);
         setProducts(products);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
-    }
+    };
 
     fetchData();
   }, []);
 
+  const openModalDeleteProduct = () => {
+    setIsModalDeleteProductOpen(true);
+  };
+
+  const closeModalDeleteProduct = () => {
+    setIsModalDeleteProductOpen(false);
+  };
+
   return (
     <div className="overflow-x-auto">
+      {isModalDeleteProductOpen && (
+        <div className="fixed p-6 inset-0 z-50 bg-[#8C8C8C] bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg max-w-[612px] w-full my-10 max-h-screen overflow-y-auto">
+            <div className="flex justify-end">
+              <button  onClick={closeModalDeleteProduct}>
+                <svg
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M28.815 27.229C28.9192 27.3331 29.0018 27.4567 29.0581 27.5928C29.1145 27.7289 29.1435 27.8747 29.1435 28.022C29.1435 28.1693 29.1145 28.3151 29.0581 28.4512C29.0018 28.5872 28.9192 28.7109 28.815 28.815C28.7109 28.9192 28.5872 29.0018 28.4512 29.0581C28.3151 29.1145 28.1693 29.1435 28.022 29.1435C27.8747 29.1435 27.7289 29.1145 27.5928 29.0581C27.4567 29.0018 27.3331 28.9192 27.229 28.815L17.9341 19.5187L8.63914 28.815C8.42882 29.0253 8.14356 29.1435 7.84611 29.1435C7.54867 29.1435 7.26341 29.0253 7.05309 28.815C6.84277 28.6047 6.72461 28.3194 6.72461 28.022C6.72461 27.7246 6.84277 27.4393 7.05309 27.229L16.3494 17.9341L7.05309 8.63914C6.84277 8.42882 6.72461 8.14356 6.72461 7.84611C6.72461 7.54867 6.84277 7.26341 7.05309 7.05309C7.26341 6.84277 7.54867 6.72461 7.84611 6.72461C8.14356 6.72461 8.42882 6.84277 8.63914 7.05309L17.9341 16.3494L27.229 7.05309C27.4393 6.84277 27.7246 6.72461 28.022 6.72461C28.3194 6.72461 28.6047 6.84277 28.815 7.05309C29.0253 7.26341 29.1435 7.54867 29.1435 7.84611C29.1435 8.14356 29.0253 8.42882 28.815 8.63914L19.5187 17.9341L28.815 27.229Z"
+                    fill="#343330"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="flex flex-col justify-center items-center text-center">
+              <h1 className="text-[32px] font-semibold mb-7 mt-[30px]">
+                Hapus File?
+              </h1>
+              <p className="max-w-[400px] text-xl mb-[51px]">
+                Konfirmasi ini akan menghapus file yang dipilih dan semua data
+                terkait secara permanen. Tindakan ini tidak dapat dibatalkan.
+              </p>
+              <div className="flex gap-9 mb-[67px]">
+                <button className="flex items-center gap-[13px] bg-primary-90 text-white rounded-lg py-3 px-6">
+                  <svg
+                    width="14"
+                    height="20"
+                    viewBox="0 0 14 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12.2812 2.75H9.875V2.21875C9.875 1.28125 9.125 0.53125 8.1875 0.53125H5.78125C4.84375 0.53125 4.09375 1.28125 4.09375 2.21875V2.75H1.6875C0.78125 2.75 0.03125 3.5 0.03125 4.40625V5.34375C0.03125 6.03125 0.4375 6.59375 1.03125 6.84375L1.53125 17.6562C1.59375 18.6875 2.40625 19.4687 3.4375 19.4687H10.4687C11.5 19.4687 12.3438 18.6562 12.375 17.6562L12.9375 6.8125C13.5312 6.5625 13.9375 5.96875 13.9375 5.3125V4.375C13.9375 3.5 13.1875 2.75 12.2812 2.75ZM5.53125 2.21875C5.53125 2.0625 5.65625 1.9375 5.8125 1.9375H8.21875C8.375 1.9375 8.5 2.0625 8.5 2.21875V2.75H5.5625V2.21875H5.53125ZM1.46875 4.40625C1.46875 4.28125 1.5625 4.15625 1.71875 4.15625H12.2812C12.4062 4.15625 12.5312 4.25 12.5312 4.40625V5.34375C12.5312 5.46875 12.4375 5.59375 12.2812 5.59375H1.71875C1.59375 5.59375 1.46875 5.5 1.46875 5.34375V4.40625ZM10.5 18.0625H3.5C3.21875 18.0625 3 17.8437 3 17.5937L2.5 7H11.5312L11.0312 17.5937C11 17.8437 10.7812 18.0625 10.5 18.0625Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M7 10.125C6.625 10.125 6.28125 10.4375 6.28125 10.8437V14.8125C6.28125 15.1875 6.59375 15.5312 7 15.5312C7.375 15.5312 7.71875 15.2188 7.71875 14.8125V10.8437C7.71875 10.4375 7.375 10.125 7 10.125Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M9.49993 10.7499C9.09368 10.7187 8.78118 10.9999 8.74993 11.4062L8.56243 14.1562C8.53118 14.5312 8.81243 14.8749 9.21868 14.9062C9.24993 14.9062 9.24993 14.9062 9.28118 14.9062C9.65618 14.9062 9.96868 14.6249 9.96868 14.2499L10.1562 11.4999C10.1562 11.0937 9.87493 10.7812 9.49993 10.7499Z"
+                      fill="white"
+                    />
+                    <path
+                      d="M4.46896 10.7499C4.09395 10.7812 3.78145 11.1249 3.8127 11.4999L4.03146 14.2499C4.06271 14.6249 4.37521 14.9062 4.71896 14.9062C4.75021 14.9062 4.75021 14.9062 4.78146 14.9062C5.15646 14.8749 5.46896 14.5312 5.43771 14.1562L5.21896 11.4062C5.21896 10.9999 4.87521 10.7187 4.46896 10.7499Z"
+                      fill="white"
+                    />
+                  </svg>
+                  Hapus
+                </button>
+                <button onClick={closeModalDeleteProduct} className="px-9 py-3 border border-primary-90 rounded-lg">
+                  Batal
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <table className="w-full border-collapse">
         <thead>
           <tr className="border-b border-black">
@@ -335,8 +408,12 @@ const ProductTable = () => {
               <td className="border-b border-black py-[12px] px-4 text-lg ">
                 {item.no}
               </td>
-              <td className="border-b border-black py-2 px-4 text-lg ">{item.produk}</td>
-              <td className="border-b border-black py-2 px-4 text-lg">{item.harga}</td>
+              <td className="border-b border-black py-2 px-4 text-lg ">
+                {item.produk}
+              </td>
+              <td className="border-b border-black py-2 px-4 text-lg">
+                {item.harga}
+              </td>
               <td className="border-b border-black py-2 px-4 text-lg">
                 {item.persediaan}
               </td>
@@ -347,7 +424,10 @@ const ProductTable = () => {
                 {item.tanggal}
               </td>
               <td className="border-b border-black py-2 pl-7 text-lg">
-                <button className="text-blue-500 hover:underline">
+                <button
+                  onClick={openModalDeleteProduct}
+                  className="text-blue-500 hover:underline"
+                >
                   <svg
                     width="6"
                     height="24"
