@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getToken } from "../../../../service/accessCookie";
 
 const Product = [
   {
@@ -259,9 +260,13 @@ const Product = [
   },
 ];
 
+const url = "https://blueharvest.irvansn.com/v1/products"
+
 const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+
+  const [products, setProducts] = useState()
 
   const totalPages = Math.ceil(Product.length / itemsPerPage);
 
@@ -273,6 +278,37 @@ const ProductTable = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const fetchProducts = async (token) => {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch products');
+    }
+  
+    const products = await response.json();
+    return products;
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = getToken();
+        const products = await fetchProducts(token);
+        setProducts(products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div className="overflow-x-auto">
