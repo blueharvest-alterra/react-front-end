@@ -8,6 +8,7 @@ import DataUser from "./pages/Dashboard/DataUsers";
 import Keluar from "./pages/Dashboard/Keluar";
 import Monitoring from "./pages/Dashboard/Monitoring";
 import Produk from "./pages/Dashboard/Produk";
+import ProdukEditdetail from "./pages/Dashboard/ProdukEditdetail";
 import Promo from "./pages/Dashboard/Promo";
 import Tambak from "./pages/Dashboard/Tambak";
 import Chat from "./pages/Dashboard/Chat";
@@ -27,6 +28,7 @@ function App() {
           <Route path="/keluar" element={<Keluar />} />
           <Route path="/monitoring" element={<Monitoring />} />
           <Route path="/produk" element={<Produk />} />
+          <Route path="/produk/detail" element={<ProdukEditdetail />} />
           <Route path="/promo" element={<Promo />} />
           <Route path="/tambak" element={<Tambak />} />
           <Route path="/chat" element={<Chat />} />
