@@ -7,12 +7,22 @@ import TestimoniSection from "../../components/LandingPages/TestimoniSection/ind
 
 export default function LandingPage() {
   return (
-    <>
-      <HeroSection />
-      <DownloadSection />
-      <FeatureSection/>
-      <BenefitSection/>
-      <TestimoniSection/>
-    </>
+    <div>
+      <section id="home">
+        <HeroSection />
+      </section>
+      <section id="download">
+        <DownloadSection />
+      </section>
+      <section id="fitur">
+        <FeatureSection />
+      </section>
+      <section id="manfaat">
+        <BenefitSection />
+      </section>
+      <section id="testimoni">
+        <TestimoniSection />
+      </section>
+    </div>
   );
 }

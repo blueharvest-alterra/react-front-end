@@ -9,7 +9,7 @@ export default function featureSection() {
                 <h1 className='text-5xl font-bold text-white '>Temukan Rangkaian Fitur Terbaik Kami</h1>
             </div>
             <div>
-                <p className='text-2xl text-white'>“Jelajahi Pilihan Terbaik Fitur Aplikasi Kami: Temukan Fitur Favoritmu!”</p>
+                <p className='text-2xl font-bold text-[#D9D9D9]'>“Jelajahi Pilihan Terbaik Fitur Aplikasi Kami: Temukan Fitur Favoritmu!”</p>
             </div>
         </div>
         <CardBenefit/>

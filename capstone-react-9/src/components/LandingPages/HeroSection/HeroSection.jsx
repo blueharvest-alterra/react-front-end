@@ -11,7 +11,7 @@ export default function HeroSection() {
       <Navbar />
       <div className="text-center flex flex-col items-center justify-center h-3/4 max-w-2xl mx-auto gap-4 text-white">
         <h1 className="text-[42px] font-[700]">BlueHarvest</h1>
-        <p className="text-[26px] font-[700]">
+        <p className="text-[26px] font-[700] text-[#D9D9D9]">
           Sukses di Dunia Perikanan Dimulai di Sini - Dapatkan Aplikasi
           Akuakultur!
         </p>
