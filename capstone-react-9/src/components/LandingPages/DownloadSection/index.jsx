@@ -5,10 +5,10 @@ import IphoneImg2 from '../../../assets/Iphone2-image.png';
 export default function DownloadSection() {
   return (
     <div>
-      <div className="bg-gradient-to-b from-[#A79F8F] via-[#9FA199] to-[#9FA199] h-screen">
+      <div className="bg-gradient-to-b from-[#A79F8F] via-[#9FA199] to-[#9FA199] min-h-screen py-12">
         <div className="text-center flex flex-col items-center justify-start h-full mx-auto gap-4 text-white pt-1">
-          <h1 className="text-[42px] font-[700]" style={{color: '#F2F2F2'}}>Download Bluharvest sekarang dan nikmati:</h1>
-          <p className="text-[22px] font-[600] mb-5" style={{color: '#D9D9D9'}}>Fitur-fitur unggulan dengan kualitas terbaik yang dirancang untuk membantu Anda menemukan produk akuakultur!</p>
+          <h1 className="text-[42px] font-[700]" style={{color: '#F2F2F2', marginTop:'5px'}}>Download Bluharvest sekarang dan nikmati:</h1>
+          <p className="text-[22px] font-[600] mb-5" style={{color: '#D9D9D9' , marginTop:'-10px'}}>Fitur-fitur unggulan dengan kualitas terbaik yang dirancang untuk membantu Anda menemukan produk akuakultur!</p>
           <div className="flex gap-8">
             <div className='relative'>
               <img 
