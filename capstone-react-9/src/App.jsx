@@ -28,7 +28,7 @@ function App() {
           <Route path="/keluar" element={<Keluar />} />
           <Route path="/monitoring" element={<Monitoring />} />
           <Route path="/produk" element={<Produk />} />
-          <Route path="/produk/detail" element={<ProdukEditdetail />} />
+          <Route path="/produk/detail/:id" element={<ProdukEditdetail />} />
           <Route path="/promo" element={<Promo />} />
           <Route path="/tambak" element={<Tambak />} />
           <Route path="/chat" element={<Chat />} />

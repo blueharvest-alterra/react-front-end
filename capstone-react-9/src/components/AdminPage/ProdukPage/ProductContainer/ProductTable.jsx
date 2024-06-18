@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getToken } from "../../../../service/accessCookie";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../../service/formatDate";
+import { Link } from "react-router-dom";
 
 const url = "https://blueharvest.irvansn.com/v1/products";
 
@@ -85,7 +86,7 @@ const ProductTable = () => {
       console.log("Product deleted successfully");
       setIdProductDelete();
       setIsModalDeleteProductOpen(false);
-      fetchData()
+      fetchData();
     } catch (error) {
       console.error("Error deleting product:", error);
       setIdProductDelete();
@@ -96,10 +97,10 @@ const ProductTable = () => {
     setIsModalDeleteProductOpen(false);
   };
 
-  const navigateToProduct = () => {
-    // navigate(`/product/detail/${id}`);
-    navigate(`/produk/detail`);
-  };
+  // const navigateToProduct = (id) => {
+  //   // navigate(`/product/detail/${id}`);
+  //   navigate(`/produk/detail/${id}`);
+  // };
 
   return (
     <div className="overflow-x-auto">
@@ -186,28 +187,28 @@ const ProductTable = () => {
         </thead>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr
-              key={index}
-              className="cursor-pointer"
-              onClick={navigateToProduct}
-            >
+            <tr key={index} className="cursor-pointer">
               <td className="border-b border-black py-6 px-4 text-lg">
-                {(currentPage - 1) * itemsPerPage + index + 1}
+                <Link to={`/produk/detail/${item.id}`}>
+                  {(currentPage - 1) * itemsPerPage + index + 1}
+                </Link>
               </td>
               <td className="border-b truncate max-w-4 border-black py-2 px-4 text-lg">
-                {item.name}
+                <Link to={`/produk/detail/${item.id}`}>{item.name}</Link>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {item.price}
+                <Link to={`/produk/detail/${item.id}`}>{item.price}</Link>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {item.persediaan}
+                <Link to={`/produk/detail/${item.id}`}>{item.persediaan}</Link>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {item.terjual}
+                <Link to={`/produk/detail/${item.id}`}>{item.terjual}</Link>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {formatDate(item.updated_at)}
+                <Link to={`/produk/detail/${item.id}`}>
+                  {formatDate(item.updated_at)}
+                </Link>
               </td>
               <td className="border-b border-black py-2 pl-7 text-lg">
                 <button
