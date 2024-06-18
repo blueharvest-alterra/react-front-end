@@ -6,7 +6,7 @@ const ContainerDetailEditProduct = () => {
                 <div className="flex flex-col gap-4">
                     <label htmlFor="">Gambar Produk</label>
                     <div className="max-w-[1042px] max-h-[329px]">
-                        <img className=" object-cover " src="/produk.png" alt="" />
+                        <img className=" object-cover " src="/produk/produk.png" alt="" />
                     </div>
                 </div>
                 <div className="flex gap-4">
@@ -31,7 +31,7 @@ const ContainerDetailEditProduct = () => {
                 </div>
                 <div className="flex gap-6 justify-end">
                     <button className="px-12 py-3 bg-primary-90 text-white font-medium rounded-lg ">Simpan</button>
-                    <button className="px-12 py-3 border border-primary-90  font-medium rounded-lg">Simpan</button>
+                    <button className="px-16 py-3 border border-primary-90  font-medium rounded-lg">Batal</button>
                 </div>
                 <hr className="border border-[#D1D5DB]" />
             </form>

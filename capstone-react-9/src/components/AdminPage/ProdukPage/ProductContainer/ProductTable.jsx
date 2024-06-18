@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getToken } from "../../../../service/accessCookie";
+import { useNavigate } from "react-router-dom";
 
 const Product = [
   {
@@ -263,6 +264,7 @@ const Product = [
 const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ProductTable = () => {
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -285,7 +287,7 @@ const ProductTable = () => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzMxODY2fQ.KFMRThlqpNRHl3JxdC7zfm8Jjga53aK7nIkiRcl4f3Q`,
         "Content-Type": "application/json",
       },
     });
@@ -297,6 +299,7 @@ const ProductTable = () => {
     const products = await response.json();
     return products;
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -318,6 +321,11 @@ const ProductTable = () => {
 
   const closeModalDeleteProduct = () => {
     setIsModalDeleteProductOpen(false);
+  };
+
+  const navigateToProduct = () => {
+    // navigate(`/product/detail/${id}`);
+    navigate(`/produk/detail`);
   };
 
   return (
@@ -404,7 +412,7 @@ const ProductTable = () => {
         </tbody>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr key={index}>
+            <tr key={index} className="cursor-pointer" onClick={navigateToProduct}>
               <td className="border-b border-black py-[12px] px-4 text-lg ">
                 {item.no}
               </td>
