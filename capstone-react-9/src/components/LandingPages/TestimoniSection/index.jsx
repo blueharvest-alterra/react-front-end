@@ -17,7 +17,7 @@ const Testimoni = () => {
           <h1 className="text-white font-bold text-[42px]">
             Testimoni Produk Kami
           </h1>
-          <p className="text-white font-[22px]">
+          <p className="text-[#D9D9D9] text-[22px] font-[500px]">
             Testimoni langsung dari para pembeli yang telah membeli
             produk-produk kami
           </p>

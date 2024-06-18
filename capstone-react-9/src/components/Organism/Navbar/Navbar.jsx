@@ -1,7 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LogoNavbar from "../../../assets/logo-navbar.png";
 
 export default function Navbar() {
+  const [activeSection, setActiveSection] = useState('');
+
+  const scrollToSection = (sectionId) => {
+    setActiveSection(sectionId);
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const linkClass = (sectionId) => {
+    return activeSection === sectionId
+      ? "block text-[#D9D9D9] border-b-4 border-blue-500 pb-2"
+      : "block text-white hover:text-[#D9D9D9]";
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['home', 'download', 'fitur', 'manfaat', 'testimoni'];
+      const scrollPosition = window.scrollY;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <nav className="bg-transparent border-gray-200 dark:bg-gray-900 font-Poppins">
       <div className="flex flex-wrap items-center justify-between mx-auto p-4 container">
@@ -28,37 +65,37 @@ export default function Navbar() {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M1 1h15M1 7h15M1 13h15"
             />
           </svg>
         </button>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="font-medium text-xl flex gap-9  md:p-0 mt-4  rounded-lg">
+          <ul className="font-bold text-xl flex gap-9 md:p-0 mt-4 rounded-lg">
             <li>
-              <a href="#" className="block text-white ">
+              <a href="#" className={linkClass('home')} onClick={() => scrollToSection('home')}>
                 Home
               </a>
             </li>
             <li>
-              <a href="#" className="block  text-white">
+              <a href="#" className={linkClass('download')} onClick={() => scrollToSection('download')}>
                 Produk
               </a>
             </li>
             <li>
-              <a href="#" className="block  text-white">
+              <a href="#" className={linkClass('fitur')} onClick={() => scrollToSection('fitur')}>
                 Akuakultur
               </a>
             </li>
             <li>
-              <a href="#" className="block  text-white">
+              <a href="#" className={linkClass('manfaat')} onClick={() => scrollToSection('manfaat')}>
                 Manfaat
               </a>
             </li>
             <li>
-              <a href="#" className="block  text-white">
+              <a href="#" className={linkClass('testimoni')} onClick={() => scrollToSection('testimoni')}>
                 Testimoni
               </a>
             </li>

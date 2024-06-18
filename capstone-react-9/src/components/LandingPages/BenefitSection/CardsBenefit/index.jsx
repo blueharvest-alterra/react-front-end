@@ -6,7 +6,7 @@ import CardManfaat3 from "../../../../assets/card-manfaat3.jpeg";
 export default function CardBenefit() {
   return (
     <div className="h-screen">
-      <div className="text-center flex flex-col items-center justify-center h-full mx-auto gap-4 text-white" style={{ marginTop: '-30px' }}>
+      <div className="text-center flex flex-col items-center justify-center h-full mx-auto gap-4 text-white" style={{ marginTop: '-100px' }}>
         <div className="flex"> 
           <div className="max-w-[372px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"> 
             <img className="rounded-t-lg" src={CardManfaat1} alt="card" style={{  width: '350px', height: '330px' }} />
@@ -19,7 +19,7 @@ export default function CardBenefit() {
               </p>
             </div>
           </div>
-          <div className="max-w-[372px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style={{ marginLeft: '40px', marginRight: '40px'}}> 
+          <div className="max-w-[372px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style={{ marginLeft: '95px', marginRight: '95px'}}> 
             <img className="rounded-t-lg" src={CardManfaat2} alt="card" style={{  width: '350px', height: '330px' }}/>
             <div className="p-5">
               <h5 className="mb-2 text-[26px] font-[700] text-primary-90 dark:text-white">
