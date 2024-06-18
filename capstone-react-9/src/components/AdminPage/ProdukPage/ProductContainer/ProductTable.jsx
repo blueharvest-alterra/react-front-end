@@ -1,283 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { getToken } from "../../../../service/accessCookie";
 import { useNavigate } from "react-router-dom";
-
-const Product = [
-  {
-    no: "1",
-    produk: "Udang",
-    harga: "30.000",
-    persediaan: "60kg",
-    terjual: "30kg",
-    tanggal: "26/4/2024",
-  },
-  {
-    no: "2",
-    produk: "Ikan",
-    harga: "25.000",
-    persediaan: "80kg",
-    terjual: "40kg",
-    tanggal: "27/4/2024",
-  },
-  {
-    no: "3",
-    produk: "Kerang",
-    harga: "20.000",
-    persediaan: "50kg",
-    terjual: "25kg",
-    tanggal: "28/4/2024",
-  },
-  {
-    no: "4",
-    produk: "Kepiting",
-    harga: "35.000",
-    persediaan: "70kg",
-    terjual: "35kg",
-    tanggal: "29/4/2024",
-  },
-  {
-    no: "5",
-    produk: "Lobster",
-    harga: "40.000",
-    persediaan: "30kg",
-    terjual: "15kg",
-    tanggal: "30/4/2024",
-  },
-  {
-    no: "6",
-    produk: "Cumi-cumi",
-    harga: "22.000",
-    persediaan: "90kg",
-    terjual: "45kg",
-    tanggal: "1/5/2024",
-  },
-  {
-    no: "7",
-    produk: "Gurita",
-    harga: "28.000",
-    persediaan: "55kg",
-    terjual: "27kg",
-    tanggal: "2/5/2024",
-  },
-  {
-    no: "8",
-    produk: "Bawal",
-    harga: "18.000",
-    persediaan: "100kg",
-    terjual: "50kg",
-    tanggal: "3/5/2024",
-  },
-  {
-    no: "9",
-    produk: "Salmon",
-    harga: "50.000",
-    persediaan: "40kg",
-    terjual: "20kg",
-    tanggal: "4/5/2024",
-  },
-  {
-    no: "10",
-    produk: "Tuna",
-    harga: "45.000",
-    persediaan: "60kg",
-    terjual: "30kg",
-    tanggal: "5/5/2024",
-  },
-  {
-    no: "11",
-    produk: "Sarden",
-    harga: "15.000",
-    persediaan: "80kg",
-    terjual: "40kg",
-    tanggal: "6/5/2024",
-  },
-  {
-    no: "12",
-    produk: "Lele",
-    harga: "12.000",
-    persediaan: "120kg",
-    terjual: "60kg",
-    tanggal: "7/5/2024",
-  },
-  {
-    no: "13",
-    produk: "Patin",
-    harga: "13.000",
-    persediaan: "110kg",
-    terjual: "55kg",
-    tanggal: "8/5/2024",
-  },
-  {
-    no: "14",
-    produk: "Bandeng",
-    harga: "14.000",
-    persediaan: "70kg",
-    terjual: "35kg",
-    tanggal: "9/5/2024",
-  },
-  {
-    no: "15",
-    produk: "Gabus",
-    harga: "16.000",
-    persediaan: "65kg",
-    terjual: "32kg",
-    tanggal: "10/5/2024",
-  },
-  {
-    no: "16",
-    produk: "Belut",
-    harga: "19.000",
-    persediaan: "75kg",
-    terjual: "37kg",
-    tanggal: "11/5/2024",
-  },
-  {
-    no: "17",
-    produk: "Kakap",
-    harga: "32.000",
-    persediaan: "85kg",
-    terjual: "42kg",
-    tanggal: "12/5/2024",
-  },
-  {
-    no: "18",
-    produk: "Tongkol",
-    harga: "17.000",
-    persediaan: "50kg",
-    terjual: "25kg",
-    tanggal: "13/5/2024",
-  },
-  {
-    no: "19",
-    produk: "Mujair",
-    harga: "11.000",
-    persediaan: "95kg",
-    terjual: "47kg",
-    tanggal: "14/5/2024",
-  },
-  {
-    no: "20",
-    produk: "Bawal",
-    harga: "21.000",
-    persediaan: "60kg",
-    terjual: "30kg",
-    tanggal: "15/5/2024",
-  },
-  {
-    no: "21",
-    produk: "Salem",
-    harga: "25.000",
-    persediaan: "70kg",
-    terjual: "35kg",
-    tanggal: "16/5/2024",
-  },
-  {
-    no: "22",
-    produk: "Tongkol",
-    harga: "23.000",
-    persediaan: "40kg",
-    terjual: "20kg",
-    tanggal: "17/5/2024",
-  },
-  {
-    no: "23",
-    produk: "Tenggiri",
-    harga: "27.000",
-    persediaan: "65kg",
-    terjual: "32kg",
-    tanggal: "18/5/2024",
-  },
-  {
-    no: "24",
-    produk: "Kerapu",
-    harga: "29.000",
-    persediaan: "50kg",
-    terjual: "25kg",
-    tanggal: "19/5/2024",
-  },
-  {
-    no: "25",
-    produk: "Bawal",
-    harga: "24.000",
-    persediaan: "80kg",
-    terjual: "40kg",
-    tanggal: "20/5/2024",
-  },
-  {
-    no: "26",
-    produk: "Salem",
-    harga: "26.000",
-    persediaan: "70kg",
-    terjual: "35kg",
-    tanggal: "21/5/2024",
-  },
-  {
-    no: "27",
-    produk: "Tenggiri",
-    harga: "28.000",
-    persediaan: "55kg",
-    terjual: "27kg",
-    tanggal: "22/5/2024",
-  },
-  {
-    no: "28",
-    produk: "Kerapu",
-    harga: "30.000",
-    persediaan: "60kg",
-    terjual: "30kg",
-    tanggal: "23/5/2024",
-  },
-  {
-    no: "29",
-    produk: "Kakap",
-    harga: "33.000",
-    persediaan: "65kg",
-    terjual: "32kg",
-    tanggal: "24/5/2024",
-  },
-  {
-    no: "30",
-    produk: "Patin",
-    harga: "14.000",
-    persediaan: "110kg",
-    terjual: "55kg",
-    tanggal: "25/5/2024",
-  },
-  {
-    no: "31",
-    produk: "Bandeng",
-    harga: "15.000",
-    persediaan: "70kg",
-    terjual: "35kg",
-    tanggal: "26/5/2024",
-  },
-  {
-    no: "32",
-    produk: "Gabus",
-    harga: "18.000",
-    persediaan: "65kg",
-    terjual: "32kg",
-    tanggal: "27/5/2024",
-  },
-];
+import { formatDate } from "../../../../service/formatDate";
 
 const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ProductTable = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
   const [products, setProducts] = useState();
   const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] =
     useState(false);
+  const [idProductDelete, setIdProductDelete] = useState();
 
-  const totalPages = Math.ceil(Product.length / itemsPerPage);
+  const totalPages = Math.ceil(products ? products.length / itemsPerPage : []);
 
-  const currentItems = Product.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const currentItems = products
+    ? products.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      )
+    : [];
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -287,7 +32,7 @@ const ProductTable = () => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzMxODY2fQ.KFMRThlqpNRHl3JxdC7zfm8Jjga53aK7nIkiRcl4f3Q`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     });
@@ -299,24 +44,52 @@ const ProductTable = () => {
     const products = await response.json();
     return products;
   };
-  
+
+  const fetchData = async () => {
+    try {
+      const token = getToken();
+      const products = await fetchProducts(token);
+      setProducts(products.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = getToken();
-        const products = await fetchProducts(token);
-        setProducts(products);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
-  const openModalDeleteProduct = () => {
+  console.log(products);
+
+  const openModalDeleteProduct = (id) => {
     setIsModalDeleteProductOpen(true);
+    setIdProductDelete(id);
+  };
+
+  const deleteProduct = async () => {
+    try {
+      const token = getToken();
+      console.log(idProductDelete);
+      const response = await fetch(`${url}/${idProductDelete}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete product");
+      }
+
+      console.log("Product deleted successfully");
+      setIdProductDelete();
+      setIsModalDeleteProductOpen(false);
+      fetchData()
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      setIdProductDelete();
+    }
   };
 
   const closeModalDeleteProduct = () => {
@@ -334,7 +107,7 @@ const ProductTable = () => {
         <div className="fixed p-6 inset-0 z-50 bg-[#8C8C8C] bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg max-w-[612px] w-full my-10 max-h-screen overflow-y-auto">
             <div className="flex justify-end">
-              <button  onClick={closeModalDeleteProduct}>
+              <button onClick={closeModalDeleteProduct}>
                 <svg
                   width="36"
                   height="36"
@@ -358,7 +131,10 @@ const ProductTable = () => {
                 terkait secara permanen. Tindakan ini tidak dapat dibatalkan.
               </p>
               <div className="flex gap-9 mb-[67px]">
-                <button className="flex items-center gap-[13px] bg-primary-90 text-white rounded-lg py-3 px-6">
+                <button
+                  onClick={deleteProduct}
+                  className="flex items-center gap-[13px] bg-primary-90 text-white rounded-lg py-3 px-6"
+                >
                   <svg
                     width="14"
                     height="20"
@@ -385,7 +161,10 @@ const ProductTable = () => {
                   </svg>
                   Hapus
                 </button>
-                <button onClick={closeModalDeleteProduct} className="px-9 py-3 border border-primary-90 rounded-lg">
+                <button
+                  onClick={closeModalDeleteProduct}
+                  className="px-9 py-3 border border-primary-90 rounded-lg"
+                >
                   Batal
                 </button>
               </div>
@@ -406,21 +185,20 @@ const ProductTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td colSpan="7" style={{ height: "19px" }}></td>
-          </tr>
-        </tbody>
-        <tbody>
           {currentItems.map((item, index) => (
-            <tr key={index} className="cursor-pointer" onClick={navigateToProduct}>
-              <td className="border-b border-black py-[12px] px-4 text-lg ">
-                {item.no}
+            <tr
+              key={index}
+              className="cursor-pointer"
+              onClick={navigateToProduct}
+            >
+              <td className="border-b border-black py-6 px-4 text-lg">
+                {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
-              <td className="border-b border-black py-2 px-4 text-lg ">
-                {item.produk}
+              <td className="border-b truncate max-w-4 border-black py-2 px-4 text-lg">
+                {item.name}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {item.harga}
+                {item.price}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
                 {item.persediaan}
@@ -429,12 +207,15 @@ const ProductTable = () => {
                 {item.terjual}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {item.tanggal}
+                {formatDate(item.updated_at)}
               </td>
               <td className="border-b border-black py-2 pl-7 text-lg">
                 <button
-                  onClick={openModalDeleteProduct}
-                  className="text-blue-500 hover:underline"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    openModalDeleteProduct(item.id);
+                  }}
+                  className="text-blue-500 hover:underline relative"
                 >
                   <svg
                     width="6"

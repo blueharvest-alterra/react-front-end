@@ -1,12 +1,15 @@
 import React, { useState, useRef } from "react";
 import ProductTable from "./ProductTable";
 import ModalAddProduct from "./ModalAddProduct";
+import { getToken } from "../../../../service/accessCookie";
+
+const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ContainerProduct = () => {
   const [isModalAddProductOpen, setIsModalAddProductOpen] = useState(false);
   const [productName, setProductName] = useState();
   const [stok, setStok] = useState();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState("");
   const [desc, setDesc] = useState();
   const [image, setImage] = useState();
   const refImage = useRef();
@@ -22,6 +25,41 @@ const ContainerProduct = () => {
   const openModalAddProduct = () => {
     setIsModalAddProductOpen(true);
   };
+
+  const addProduct = async () => {
+    try {
+      const token = getToken();
+      console.log(idProductDelete);  // Pastikan variabel idProductDelete sudah didefinisikan
+  
+      const productData = new FormData();
+      productData.append("name", "test");
+      productData.append("price", 12222);
+      productData.append("status", "available");
+      productData.append("description", "test");
+      productData.append("thumbnail", thumbnailFile); // thumbnailFile adalah file yang ingin diunggah
+  
+      const response = await fetch(`${url}/${idProductDelete}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: productData,
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Failed to post product: ${errorData.message}`);
+      }
+  
+      console.log("Product posted successfully");
+      resetValue();
+      closeModalAddProduct();
+    } catch (error) {
+      console.error('Error posting product:', error);
+    }
+  };
+  
+  
 
   const closeModalAddProduct = () => {
     resetValue();
@@ -171,6 +209,7 @@ const ContainerProduct = () => {
               <div className="flex justify-end gap-4">
                 <button
                   type="submit"
+                  onClick={(e) => addProduct(e)}
                   className="bg-primary-90 text-white px-20 py-3 rounded-md"
                 >
                   Simpan
