@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { getToken } from "../../../../service/accessCookie";
 
 const Product = [
   {
@@ -183,9 +184,18 @@ const ArticleTable = () => {
 
   useEffect(() => {
     const fetchArticel = async () => {
+      const token = getToken()
+      console.log(token)
       try {
         const response = await fetch(
-          "https://blueharvest.irvansn.com/v1/articles"
+          "https://blueharvest.irvansn.com/v1/articles",
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }
         );
         const data = await response.json();
         setArticle(data.data.articles)
@@ -195,6 +205,7 @@ const ArticleTable = () => {
     };
     fetchArticel();
   }, []);
+
 
   console.log(article)
 
