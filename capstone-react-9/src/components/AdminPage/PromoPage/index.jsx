@@ -65,7 +65,7 @@ const PromoPage = () => {
     <LayoutDashboard>
       <div className="bg-white rounded-lg p-9 w-full">
         <div className="flex justify-between items-center">
-          <h1 className="text-[30px] font-Poppins font-semibold">Tambak</h1>
+          <h1 className="text-[30px] font-Poppins font-semibold">Promo</h1>
           <button
             type="button"
             onClick={handleOpenModal}
