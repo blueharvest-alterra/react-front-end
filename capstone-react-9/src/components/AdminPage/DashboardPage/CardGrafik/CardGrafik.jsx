@@ -1,144 +1,177 @@
-import React from 'react'
-import ApexCharts from 'apexcharts'; // Import ApexCharts library
+import  { useEffect, useState } from 'react';
+import Chart from 'react-apexcharts';
 
-export default function CardGrafik() {
+export default function GrafikPenjualan() {
+  const [chartData, setChartData] = useState([]);
+
+  useEffect(() => {
+    const data = [
+      {
+        "date": "2024-05-18",
+        "value": 0
+    },
+    {
+        "date": "2024-05-19",
+        "value": 0
+    },
+    {
+        "date": "2024-05-20",
+        "value": 0
+    },
+    {
+        "date": "2024-05-21",
+        "value": 0
+    },
+    {
+        "date": "2024-05-22",
+        "value": 0
+    },
+    {
+        "date": "2024-05-23",
+        "value": 0
+    },
+    {
+        "date": "2024-05-24",
+        "value": 105000
+    },
+    {
+        "date": "2024-05-25",
+        "value": 60000
+    },
+    {
+        "date": "2024-05-26",
+        "value": 117000
+    },
+    {
+        "date": "2024-05-27",
+        "value": 106000
+    },
+    {
+        "date": "2024-05-28",
+        "value": 436000
+    },
+    {
+        "date": "2024-05-29",
+        "value": 206000
+    },
+    {
+        "date": "2024-05-30",
+        "value": 71000
+    },
+    {
+        "date": "2024-05-31",
+        "value": 187000
+    },
+    {
+        "date": "2024-06-01",
+        "value": 61000
+    },
+    {
+        "date": "2024-06-02",
+        "value": 152000
+    },
+    {
+        "date": "2024-06-03",
+        "value": 147000
+    },
+    {
+        "date": "2024-06-04",
+        "value": 142000
+    },
+    {
+        "date": "2024-06-05",
+        "value": 82000
+    },
+    {
+        "date": "2024-06-06",
+        "value": 187000
+    },
+    {
+        "date": "2024-06-07",
+        "value": 67000
+    },
+    {
+        "date": "2024-06-08",
+        "value": 217000
+    },
+    {
+        "date": "2024-06-09",
+        "value": 221000
+    },
+    {
+        "date": "2024-06-10",
+        "value": 627000
+    },
+    {
+        "date": "2024-06-11",
+        "value": 534000
+    },
+    {
+        "date": "2024-06-12",
+        "value": 286000
+    },
+    {
+        "date": "2024-06-13",
+        "value": 570000
+    },
+    {
+        "date": "2024-06-14",
+        "value": 130000
+    },
+    {
+        "date": "2024-06-15",
+        "value": 310000
+    },
+    {
+        "date": "2024-06-16",
+        "value": 610000
+    },
+    {
+        "date": "2024-06-17",
+        "value": 94000
+    }
+    ];
+
+    setChartData(data.map(item => ({ x: new Date(item.date), y: item.value })));
+  }, []);
+
+  const options = {
+    series: [{
+      name: 'Value',
+      data: chartData
+    }],
+    chart: {
+      type: 'area',
+      height: 350,
+      zoom: {
+        enabled: false
+      },
+      toolbar: {
+        show: false
+      }
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'straight'
+    },
+    xaxis: {
+      type: 'datetime'
+    },
+    yaxis: {
+      opposite: true
+    },
+    legend: {
+      horizontalAlign: 'left'
+    }
+  };
+
   return (
-    <div style={{ height: '414px', width: '1080px' }} className='py-6 px-14 rounded-2xl bg-white border-b-2 border-primary-70'>
-        <h1>Ringkasan Pendapatan</h1>
-        <div className="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-  <div className="flex justify-between">
-    <div>
-      <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">
-        32.4k
-      </h5>
-      <p className="text-base font-normal text-gray-500 dark:text-gray-400">
-        Users this week
-      </p>
+    <div style={{ height: '414px', width: '1162px', overflow: 'hidden' }} className='py-6 px-14 font-Poppins rounded-2xl bg-white border-b-2 border-primary-70'>
+      <h1 className='text-[26px] font-bold'>Ringkasan Pendapatan</h1>
+      <p className='text-lg font-medium'>Pendapatan dalam 30 hari terakhir</p>
+      <Chart options={options} series={options.series} type="area" height={300} />
     </div>
-    <div className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-      12%
-      <svg
-        className="w-3 h-3 ms-1"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 10 14"
-      >
-        <path
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M5 13V1m0 0L1 5m4-4 4 4"
-        />
-      </svg>
-    </div>
-  </div>
-  <div id="area-chart" />
-  <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-    <div className="flex justify-between items-center pt-5">
-      {/* Button */}
-      <button
-        id="dropdownDefaultButton"
-        data-dropdown-toggle="lastDaysdropdown"
-        data-dropdown-placement="bottom"
-        className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-        type="button"
-      >
-        Last 7 days
-        <svg
-          className="w-2.5 m-2.5 ms-1.5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 10 6"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="m1 1 4 4 4-4"
-          />
-        </svg>
-      </button>
-      {/* Dropdown menu */}
-      <div
-        id="lastDaysdropdown"
-        className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-      >
-        <ul
-          className="py-2 text-sm text-gray-700 dark:text-gray-200"
-          aria-labelledby="dropdownDefaultButton"
-        >
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Yesterday
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Today
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Last 7 days
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Last 30 days
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Last 90 days
-            </a>
-          </li>
-        </ul>
-      </div>
-      <a
-        href="#"
-        className="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2"
-      >
-        Users Report
-        <svg
-          className="w-2.5 h-2.5 ms-1.5 rtl:rotate-180"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 6 10"
-        >
-          <path
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="m1 9 4-4-4-4"
-          />
-        </svg>
-      </a>
-    </div>
-  </div>
-</div>
-
-
-    </div>
-  )
+  );
 }

@@ -16,7 +16,7 @@ export default function dashboardPage() {
                 <CardTotalTambak/>
             </div>
             <CardGrafik/>
-            <div className='flex gap-2'>
+            <div className='flex gap-4'>
                 <CardTabelArtikel/>
                 <CardTabelProduk/>
             </div>
