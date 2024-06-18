@@ -67,7 +67,7 @@ const ContainerProduct = () => {
   };
 
   return (
-    <div className="bg-white w-full p-9 mr-8 flex flex-col gap-[38px] mb-8">
+    <div className="bg-white w-full p-9 flex flex-col gap-[38px] mb-8">
       <div className="flex justify-between">
         <h1 className="text-[28px] font-semibold">Produk</h1>
         <div

@@ -4,6 +4,7 @@ import SignIn from "./pages/Auth/SignIn";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Transaksi from "./pages/Dashboard/Transaksi";
 import Artikel from "./pages/Dashboard/Artikel";
+import AddArtikel from "./pages/Dashboard/AddArtikel";
 import DataUser from "./pages/Dashboard/DataUsers";
 import Keluar from "./pages/Dashboard/Keluar";
 import Monitoring from "./pages/Dashboard/Monitoring";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/transaksi" element={<Transaksi />} />
           <Route path="/artikel" element={<Artikel />} />
+          <Route path="/artikel/add-artikel" element={<AddArtikel />} />
           <Route path="/data-user" element={<DataUser />} />
           <Route path="/keluar" element={<Keluar />} />
           <Route path="/monitoring" element={<Monitoring />} />
