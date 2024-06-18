@@ -38,7 +38,7 @@ export default function CardTabelProduk() {
               <th style={{ width: '44px' }} className='flex items-start text-sm font-medium'>Foto</th>
               <th style={{ width: '150px' }} className='flex items-start text-sm font-medium'>Nama Produk</th>
               <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Harga</th>
-              <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Terjual</th>
+              <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Status</th>
             </thead>
             <tbody>
               {productData.map((product) => (
@@ -53,7 +53,15 @@ export default function CardTabelProduk() {
                     <p className='text-sm font-medium'>Rp {product.price}</p>
                   </td>
                   <td style={{ width: '100px' }}>
-                    <p className='text-sm font-medium'>{product.sold || '-'}</p>
+                  <span
+                      className={`${
+                        product.status === "available"
+                          ? "bg-[#74F1C4]"
+                          : "bg-[#FF3B3B]"
+                      } inline-block px-2 py-1 rounded-2xl`}
+                    >
+                      {product.status}
+                    </span>
                   </td>
                 </tr>
               ))}

@@ -10,11 +10,12 @@ const PromoPage = () => {
     name: "",
     code: "",
     status: "",
-    amount: ""
+    amount: "",
   });
-  
 
-  
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzgwNDc5fQ.dxb-oc9QncUxBLZ9pE2HKcG18B7i97qTUrYLlFpeTCc";
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,13 +23,18 @@ const PromoPage = () => {
       console.log(formData);
       const response = await axios.post(
         "https://blueharvest.irvansn.com/v1/promos",
-        formData
+        formData,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
       );
       console.log("Response data:", response.data);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
-    setIsModalOpen(false)
+    setIsModalOpen(false);
   };
 
   const handleOpenModal = () => {
@@ -57,7 +63,7 @@ const PromoPage = () => {
 
   return (
     <LayoutDashboard>
-      <div className="bg-white rounded-lg p-9">
+      <div className="bg-white rounded-lg p-9 w-full">
         <div className="flex justify-between items-center">
           <h1 className="text-[30px] font-Poppins font-semibold">Tambak</h1>
           <button
