@@ -224,7 +224,7 @@ const ArticleTable = () => {
           {currentItems.map((item, index) => (
             <tr key={index}>
               <td className="border-b border-black py-6 px-4 text-lg ">
-                {index + 1}
+                {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
               <td className="border-b border-black py-6 px-4 text-lg ">
                 {item.title}
