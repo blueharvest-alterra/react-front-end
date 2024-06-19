@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { getToken } from "../../../../service/accessCookie";
+import { Link } from "react-router-dom";
 
 const Product = [
   {
     no: "1",
     judul: "Tata Cara Budidaya Perikanan",
     tanggal: "26/4/2024",
-  }
+  },
 ];
 
 const ArticleTable = () => {
   const [article, setArticle] = useState([]);
-  const [idDeleteArticle, setIdDeleteArticle] = useState()
-  const [isModalDeleteArticleOpen, setIsModalDeleteArticleOpen] = useState(false)
+  const [idDeleteArticle, setIdDeleteArticle] = useState();
+  const [isModalDeleteArticleOpen, setIsModalDeleteArticleOpen] =
+    useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -29,21 +31,21 @@ const ArticleTable = () => {
 
   useEffect(() => {
     const fetchArticel = async () => {
-      const token = getToken()
-      console.log(token)
+      const token = getToken();
+      console.log(token);
       try {
         const response = await fetch(
           "https://blueharvest.irvansn.com/v1/articles",
           {
-            method: 'GET',
+            method: "GET",
             headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json'
-            }
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
           }
         );
         const data = await response.json();
-        setArticle(data.data.articles)
+        setArticle(data.data.articles);
       } catch (error) {
         console.log("error fetch artikel");
       }
@@ -51,37 +53,39 @@ const ArticleTable = () => {
     fetchArticel();
   }, []);
 
-
-  console.log(article)
+  console.log(article);
 
   const openModalDeleteArticle = (id) => {
     setIsModalDeleteArticleOpen(true);
     setIdDeleteArticle(id);
   };
 
-  const deleteArticle = async() => {
-    const token = getToken()
-    try{
-      const response = await fetch(`https://blueharvest.irvansn.com/v1/articles/${idDeleteArticle}`, {
-        method: "DELETE",
-        headers: {
-          authorization: `Bearer ${token}`
+  const deleteArticle = async () => {
+    const token = getToken();
+    try {
+      const response = await fetch(
+        `https://blueharvest.irvansn.com/v1/articles/${idDeleteArticle}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
         }
-      })
+      );
 
-      const data = await response.json()
-      console.log(data)
-      closeModalDeleteArticle()
-    } catch{
-      console.log("delete product error")
-      setIdDeleteArticle()
+      const data = await response.json();
+      console.log(data);
+      closeModalDeleteArticle();
+    } catch {
+      console.log("delete product error");
+      setIdDeleteArticle();
     }
-  }
+  };
 
   const closeModalDeleteArticle = () => {
-    setIsModalDeleteArticleOpen(false)
-    setIdDeleteArticle()
-  }
+    setIsModalDeleteArticleOpen(false);
+    setIdDeleteArticle();
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -158,25 +162,35 @@ const ArticleTable = () => {
         <thead>
           <tr className="border-b border-black">
             <th className="text-start p-4 w-28">No</th>
-            <th className="text-start p-4 w-[600px] ">Judul</th>
+            <th className="text-start p-4 w-[600px]">Judul</th>
             <th className="text-start p-4">Tanggal</th>
             <th className="text-start p-4">Aksi</th>
           </tr>
         </thead>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr key={index}>
-              <td className="border-b border-black py-6 px-4 text-lg ">
+            <tr
+              key={index}
+              className="cursor-pointer"
+              onClick={() => (window.location.href = `detail/${item.id}`)}
+            >
+              <td className="border-b border-black py-6 px-4 text-lg">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
-              <td className="border-b border-black py-6 px-4 text-lg ">
+              <td className="border-b border-black py-6 px-4 text-lg">
                 {item.title}
               </td>
               <td className="border-b border-black py-6 px-4 text-lg">
-                {Product[0].tanggal}
+                {item.tanggal}
               </td>
               <td className="border-b border-black py-6 pl-7 text-lg">
-                <button onClick={() => openModalDeleteArticle(item.id)} className="text-blue-500 hover:underline">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    openModalDeleteArticle(item.id);
+                  }}
+                  className="text-blue-500 hover:underline"
+                >
                   <svg
                     width="6"
                     height="24"
