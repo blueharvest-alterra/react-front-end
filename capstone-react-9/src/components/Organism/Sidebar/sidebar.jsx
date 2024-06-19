@@ -14,6 +14,7 @@ export default function sidebar() {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteToken();
+        localStorage.removeItem("fullname");
         window.location.href = "/signin";
       }
     });

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { getToken } from '../../../../service/accessCookie';
 
 export default function CardTabelProduk() {
   const [ productData, setProductData ] = useState ([]);
@@ -7,7 +8,7 @@ export default function CardTabelProduk() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzI3MzU3fQ.DXbwfGAdSXqg6A7DriN1tjff79Jc6iN9TokHzVFfpN8"
+        const token = getToken()
         const response = await axios.get('https://blueharvest.irvansn.com/v1/dashboards/admin', {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -36,7 +37,7 @@ export default function CardTabelProduk() {
           <table>
             <thead style={{ height: '31px', width:'489px' }} className='flex gap-5 px-2 items-center border-b border-primary-70'>
               <th style={{ width: '44px' }} className='flex items-start text-sm font-medium'>Foto</th>
-              <th style={{ width: '150px' }} className='flex items-start text-sm font-medium'>Nama Produk</th>
+              <th style={{ width: '500px' }} className='flex items-start text-sm font-medium'>Nama Produk</th>
               <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Harga</th>
               <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Status</th>
             </thead>
@@ -46,7 +47,7 @@ export default function CardTabelProduk() {
                   <td style={{width: '50px' }}>
                     <img src={product.thumbnail} alt="" style={{ height: '40px', width: '40px'}}/>
                   </td>
-                  <td style={{width: '150px' }}>
+                  <td style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
                     <p className='text-sm font-medium'>{product.name}</p>
                   </td>
                   <td style={{ width: '100px' }}>

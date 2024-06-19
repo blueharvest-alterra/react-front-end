@@ -1,5 +1,6 @@
 import {useState, useEffect } from 'react'
 import axios from 'axios'
+import { getToken } from '../../../../service/accessCookie';
 
 
 export default function CardTotalTambak() {
@@ -8,7 +9,7 @@ export default function CardTotalTambak() {
   useEffect (() => {
     const fetchData = async () => {
       try {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzI3MzU3fQ.DXbwfGAdSXqg6A7DriN1tjff79Jc6iN9TokHzVFfpN8"
+        const token = getToken()
         const response = await axios.get('https://blueharvest.irvansn.com/v1/dashboards/admin', {
           headers: {
             'Authorization': `Bearer ${token}`

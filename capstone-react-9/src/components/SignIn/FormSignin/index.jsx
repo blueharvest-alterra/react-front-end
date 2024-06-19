@@ -29,6 +29,8 @@ export default function FormSignin() {
 
       if (response.status === 200) {
         const token = response.data.data.user_token;
+        const name = response.data.data.full_name;
+        localStorage.setItem ("fullname",name);
         document.cookie = `token=${token}; path=/; secure; SameSite=Strict`;
         setMessage("Berhasil login!");
         navigate('/dashboard')
