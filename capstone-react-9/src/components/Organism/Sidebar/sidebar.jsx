@@ -1,7 +1,25 @@
 import { Link } from 'react-router-dom'
 import LogoDashboard from '../../../assets/logoBlueHarvest.png'
+import { deleteToken } from '../../../service/accessCookie';
+import Swal from "sweetalert2";
 
 export default function sidebar() {
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Keluar dari Akun ?",
+      text: "Konfirmasi ini akan mengeluarkan anda dari akun yang saat ini dipakai. Untuk masuk kembali diharuskan untuk mengisi email dan password kembali.",
+      showCancelButton: true,
+      confirmButtonColor: "#0075EB",
+      confirmButtonText: "Keluar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteToken();
+        window.location.href = "/signin";
+      }
+    });
+  };
+  
+  
   return (
     <div
       className="bg-primary-90 py-3 pl-7 text-netral-10 fixed top-0 left-0 z-50"
@@ -198,8 +216,8 @@ export default function sidebar() {
               <h1 className="text-xl font-medium">Transaksi</h1>
             </div>
         </Link>
-        <a
-          href=""
+        <Link
+          onClick={handleLogout}
           className="flex hover:bg-primary-50 items-start rounded-3xl"
           style={{ width: "191px", height: "50px" }}
         >
@@ -220,7 +238,7 @@ export default function sidebar() {
           <div className="p-3">
             <h1 className="text-xl font-medium">Keluar</h1>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );
