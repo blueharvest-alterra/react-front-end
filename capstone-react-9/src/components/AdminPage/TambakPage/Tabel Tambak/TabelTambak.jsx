@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Pagination from "../../../Organism/Pagination/Pagination";
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 export default function TabelTambak() {
   const [promos, setPromos] = useState([]);
@@ -32,8 +33,7 @@ export default function TabelTambak() {
 
 
 
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzgwNDc5fQ.dxb-oc9QncUxBLZ9pE2HKcG18B7i97qTUrYLlFpeTCc";
+  const token = Cookies.get("token");
 
   useEffect(() => {
     const fetchData = async () => {
