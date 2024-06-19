@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Cookies from "js-cookie";
 import Pagination from "../../../Organism/Pagination/Pagination";
 
 export default function TabelPromo() {
@@ -28,13 +29,10 @@ export default function TabelPromo() {
     setCurrentPage(pageNumber);
   };
 
-
-
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzgwNDc5fQ.dxb-oc9QncUxBLZ9pE2HKcG18B7i97qTUrYLlFpeTCc";
-
   useEffect(() => {
     const fetchData = async () => {
+      const token = Cookies.get("token");
+      console.log(token)
       try {
         const response = await axios.get(
           "https://blueharvest.irvansn.com/v1/promos",
@@ -91,6 +89,7 @@ export default function TabelPromo() {
       ...formData,
       amount: parseInt(formData.amount),
     };
+    const token = Cookies.get("token"); // Mengambil token dari cookie
     try {
       const response = await axios.put(
         `https://blueharvest.irvansn.com/v1/promos/${updatedFormData.id}`,
@@ -101,14 +100,16 @@ export default function TabelPromo() {
           },
         }
       );
-      setIsModalOpen(false);
+      
     } catch (error) {
       console.error("Error updating promo:", error);
     }
+    setIsModalOpen(false);
   };
 
   const handleDelete = async (promoId) => {
     console.log(promoId);
+    const token = Cookies.get("token"); // Mengambil token dari cookie
     try {
       await axios.delete(
         `https://blueharvest.irvansn.com/v1/promos/${promoId}`,
@@ -125,7 +126,6 @@ export default function TabelPromo() {
       console.error("Error deleting promo:", error);
     }
   };
-
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -365,7 +365,6 @@ export default function TabelPromo() {
     </div>
   );
 }
-
 
 // import React, { useEffect, useState, useRef } from "react";
 // import Swal from "sweetalert2";
