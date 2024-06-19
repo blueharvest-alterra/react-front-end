@@ -1,9 +1,10 @@
-import React from "react"
-import ArticleTable from "./ArticleTable"
+import React from "react";
+import ArticleTable from "./ArticleTable";
+import { Link } from "react-router-dom";
 
 const ArtikelContainer = () => {
-    return (
-        <div className="bg-white p-9 mr-8 flex flex-col gap-[38px] mb-8">
+  return (
+    <div className="bg-white w-full overflow-x-auto p-9 flex flex-col gap-[38px] mb-8">
       <div className="flex justify-between">
         <h1 className="text-[28px] font-semibold">Artikel</h1>
         <div className="flex items-center rounded-lg py-3 px-6 gap-[10px] bg-primary-90">
@@ -30,12 +31,14 @@ const ArtikelContainer = () => {
               </clipPath>
             </defs>
           </svg>
-          <button className="text-white">Tambah Artikel</button>
+          <Link to={"/artikel/add-artikel"}>
+            <button className="text-white">Tambah Artikel</button>
+          </Link>
         </div>
       </div>
-      <ArticleTable/>
+      <ArticleTable />
     </div>
-    )
-}
+  );
+};
 
-export default ArtikelContainer
+export default ArtikelContainer;
