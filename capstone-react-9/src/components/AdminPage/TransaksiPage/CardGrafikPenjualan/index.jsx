@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Chart from 'react-apexcharts';
+import { getToken } from '../../../../service/accessCookie';
 
 export default function GrafikPenjualan() {
   const [transactionCount, setTransactionCount] = useState(0);
@@ -9,7 +10,7 @@ export default function GrafikPenjualan() {
   useEffect(() => {
     const fetchTransactionCount = async () => {
       try {
-        const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzgwNDc5fQ.dxb-oc9QncUxBLZ9pE2HKcG18B7i97qTUrYLlFpeTCc';
+        const token = getToken();
         let allTransactions = [];
         let page = 1;
         let totalPages = 1;

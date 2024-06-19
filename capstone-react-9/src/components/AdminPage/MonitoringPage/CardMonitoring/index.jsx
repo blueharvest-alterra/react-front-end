@@ -3,13 +3,14 @@ import axios from 'axios';
 import LogoAir from '../../../../assets/logo-air.svg';
 import LogoOksigen from '../../../../assets/logo-oksigen.svg';
 import LogoSuhu from '../../../../assets/logo-suhu.svg';
+import { getToken } from '../../../../service/accessCookie';
 
 export default function CardMonitoring() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjo0MzQ2Nzc5MDE3fQ._xYdfj3HzU9cBc3DbJsMxuG2-B697QODsj5UgjypbE8';
+      const token = getToken();
       try {
         const response = await axios.get(`https://blueharvest.irvansn.com/v1/farmmonitors/farm/2d5f05ec-c41b-420d-8253-b4e7606bffcb`, {
             headers: {
