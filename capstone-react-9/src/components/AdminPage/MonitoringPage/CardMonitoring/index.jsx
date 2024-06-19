@@ -9,9 +9,9 @@ export default function CardMonitoring() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjoxNzE4NzgwNDc5fQ.dxb-oc9QncUxBLZ9pE2HKcG18B7i97qTUrYLlFpeTCc';
+      const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6ImIwMWI0ZjkwLWEyNGYtNDc4YS1hYTQ1LTM4MTM1YWMyNDIwYiIsIkVtYWlsIjoiaXJ2YW4tc3VyeWEtYWRtaW4tMkBibHVlaGFydmVzdC5jb20iLCJGdWxsTmFtZSI6IklydmFuIiwiUm9sZSI6ImFkbWluIiwiZXhwIjo0MzQ2Nzc5MDE3fQ._xYdfj3HzU9cBc3DbJsMxuG2-B697QODsj5UgjypbE8';
       try {
-        const response = await axios.get('https://blueharvest.irvansn.com/v1/farmmonitors/farm/abeb5ea5-e83f-43e5-bb05-e5cde9e5c5b1', {
+        const response = await axios.get(`https://blueharvest.irvansn.com/v1/farmmonitors/farm/2d5f05ec-c41b-420d-8253-b4e7606bffcb`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -54,7 +54,7 @@ export default function CardMonitoring() {
       <div style={{ height: '116px', width:'342px' }} className='flex flex-col bg-white shadow-md py-3 px-4 rounded-2xl border-primary-70 items-start'>
         <div className='flex justify-between items-center self-stretch h-11'>
           <div>
-            <h1 className='text-[20px] font-bold'>Suhu Air Dalam Tambak</h1>
+            <h1 className='text-[19px] font-bold'>Suhu Air Dalam Tambak</h1>
           </div>
           <div className='relative'>
             <img style={{ marginBottom: '-800px'}} src={LogoSuhu} alt="logo" />
@@ -69,7 +69,7 @@ export default function CardMonitoring() {
       <div style={{ height: '116px', width:'342px' }} className='flex flex-col bg-white shadow-md py-3 px-4 rounded-2xl border-primary-70 items-start'>
         <div className='flex justify-between items-center self-stretch h-11'>
           <div>
-            <h1 className='text-[20px] font-bold'>Ph Air Dalam Tambak</h1>
+            <h1 className='text-[19px] font-bold'>Ph Air Dalam Tambak</h1>
           </div>
           <div className='relative'>
             <img style={{ marginBottom: '-800px'}} src={LogoAir} alt="logo" />
@@ -84,7 +84,7 @@ export default function CardMonitoring() {
       <div style={{ height: '116px', width:'342px' }} className='flex flex-col bg-white shadow-md py-3 px-4 rounded-2xl border-primary-70 items-start'>
         <div className='flex justify-between items-center self-stretch h-11'>
           <div>
-            <h1 className='text-[20px] font-bold'>Oksigen Terlarut Dalam Tambak</h1>
+            <h1 className='text-[19px] font-bold'>Oksigen Dalam Tambak</h1>
           </div>
           <div className='relative'>
             <img style={{ marginBottom: '-800px'}} src={LogoOksigen} alt="logo" />

@@ -11,6 +11,7 @@ import Produk from "./pages/Dashboard/Produk";
 import Promo from "./pages/Dashboard/Promo";
 import Tambak from "./pages/Dashboard/Tambak";
 import Chat from "./pages/Dashboard/Chat";
+import EditTambak from "./pages/Dashboard/EditTambak.jsx"; // Import the new component
 import PrivateRoute from "./Routes/PrivateRoute";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="/produk" element={<Produk />} />
           <Route path="/promo" element={<Promo />} />
           <Route path="/tambak" element={<Tambak />} />
+          <Route path="/tambak/edit/:id" element={<EditTambak />} /> {/* Add the new route */}
           <Route path="/chat" element={<Chat />} />
         </Route>
       </Routes>
