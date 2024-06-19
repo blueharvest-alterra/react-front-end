@@ -98,8 +98,8 @@ export default function CardPendapatan() {
 
   return (
     <div
-      style={{ height: '124px', width: '375px' }}
-      className="flex flex-col bg-white py-3 px-4 rounded-2xl border-b-2 border-primary-70 items-start"
+      style={{ height: '124px' }}
+      className="flex flex-col bg-white py-3 px-4 rounded-2xl border-b-2 border-primary-70 items-start w-[33%]"
     >
       <div className="flex justify-between items-center self-stretch h-11">
         <div>

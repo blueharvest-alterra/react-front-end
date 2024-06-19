@@ -168,7 +168,7 @@ export default function GrafikPenjualan() {
   };
 
   return (
-    <div style={{ height: '414px', width: '1162px', overflow: 'hidden' }} className='py-6 px-14 font-Poppins rounded-2xl bg-white border-b-2 border-primary-70'>
+    <div style={{ height: '414px', overflow: 'hidden' }} className='w-full py-6 px-14 font-Poppins rounded-2xl bg-white border-b-2 border-primary-70'>
       <h1 className='text-[26px] font-bold'>Ringkasan Pendapatan</h1>
       <p className='text-lg font-medium'>Pendapatan dalam 30 hari terakhir</p>
       <Chart options={options} series={options.series} type="area" height={300} />

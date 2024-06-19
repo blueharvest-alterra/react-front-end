@@ -9,18 +9,18 @@ import LayoutDashboard from '../../LayoutDashboard/LayoutDashboard'
 export default function dashboardPage() {
   return (
     <div>
-        <LayoutDashboard>
-            <div className='flex gap-4'>
-                <CardPendapatan/>
-                <CardTotalProduk/>
-                <CardTotalTambak/>
-            </div>
-            <CardGrafik/>
-            <div className='flex gap-4'>
-                <CardTabelArtikel/>
-                <CardTabelProduk/>
-            </div>
-        </LayoutDashboard>
+      <LayoutDashboard>
+        <div className="flex gap-4 w-full">
+          <CardPendapatan />
+          <CardTotalProduk />
+          <CardTotalTambak />
+        </div>
+        <CardGrafik />
+        <div className="flex gap-4 w-full">
+          <CardTabelArtikel />
+          <CardTabelProduk />
+        </div>
+      </LayoutDashboard>
     </div>
-  )
+  );
 }
