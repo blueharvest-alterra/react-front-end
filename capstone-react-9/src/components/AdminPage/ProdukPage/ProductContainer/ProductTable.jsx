@@ -11,7 +11,6 @@ const ProductTable = () => {
   const [products, setProducts] = useState();
   const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] =
     useState(false);
-  const [isModalActionsOpen, setIsModalActionsOpen] = useState(false);
   const [idProductSelected, setIdProductSelected] = useState();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,8 +60,6 @@ const ProductTable = () => {
     fetchData();
   }, []);
 
-  console.log(products);
-
   const openModalDeleteProduct = (e) => {
     e.preventDefault()
     setIsModalDeleteProductOpen(true);
@@ -101,8 +98,6 @@ const ProductTable = () => {
   const openModalActions = (id) => {
     setIdProductSelected((prev) => (prev === id ? null : id));
   };
-
-  const closeModalActions = () => {};
 
   return (
     <div className="overflow-x-auto">

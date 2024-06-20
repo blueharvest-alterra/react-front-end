@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getToken } from "../../../../service/accessCookie";
 import { Link } from "react-router-dom";
 
-const Product = [
-  {
-    no: "1",
-    judul: "Tata Cara Budidaya Perikanan",
-    tanggal: "26/4/2024",
-  },
-];
-
 const ArticleTable = () => {
   const [article, setArticle] = useState([]);
-  const [idDeleteArticle, setIdDeleteArticle] = useState();
+  const [idArticleSelected, setIdArticleSelected] = useState();
   const [isModalDeleteArticleOpen, setIsModalDeleteArticleOpen] =
     useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,14 +49,14 @@ const ArticleTable = () => {
 
   const openModalDeleteArticle = (id) => {
     setIsModalDeleteArticleOpen(true);
-    setIdDeleteArticle(id);
+    setIdArticleSelected(id);
   };
 
   const deleteArticle = async () => {
     const token = getToken();
     try {
       const response = await fetch(
-        `https://blueharvest.irvansn.com/v1/articles/${idDeleteArticle}`,
+        `https://blueharvest.irvansn.com/v1/articles/${idArticleSelected}`,
         {
           method: "DELETE",
           headers: {
@@ -78,14 +70,34 @@ const ArticleTable = () => {
       closeModalDeleteArticle();
     } catch {
       console.log("delete product error");
-      setIdDeleteArticle();
+      setIdArticleSelected();
     }
   };
 
   const closeModalDeleteArticle = () => {
     setIsModalDeleteArticleOpen(false);
-    setIdDeleteArticle();
+    setIdArticleSelected();
   };
+
+  const openModalActions = (id) => {
+    console.log(id);
+    setIdArticleSelected((prev) => (prev === id ? null : id));
+  };
+
+  const modalActions = useRef()
+
+  const handleClickOutside = (event) => {
+    if (modalActions.current && !modalActions.current.contains(event.target)) {
+      setIdArticleSelected();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="overflow-x-auto">
@@ -169,11 +181,7 @@ const ArticleTable = () => {
         </thead>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr
-              key={index}
-              className="cursor-pointer"
-              onClick={() => (window.location.href = `artikel/detail/${item.id}`)}
-            >
+            <tr key={index} className="cursor-pointer relative">
               <td className="border-b border-black py-6 px-4 text-lg">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
@@ -183,11 +191,11 @@ const ArticleTable = () => {
               <td className="border-b border-black py-6 px-4 text-lg">
                 {item.tanggal}
               </td>
-              <td className="border-b border-black py-6 pl-7 text-lg">
+              <td className="border-b border-black py-6 pl-7 text-lg relative">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    openModalDeleteArticle(item.id);
+                    openModalActions(item.id);
                   }}
                   className="text-blue-500 hover:underline"
                 >
@@ -212,6 +220,30 @@ const ArticleTable = () => {
                     />
                   </svg>
                 </button>
+                {idArticleSelected === item.id && (
+                  <div>
+                    <div
+                    ref={modalActions}
+                    className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg">
+                      <Link to={`/artikel/detail/${idArticleSelected}`}>
+                        <button className="w-full px-4 py-2 border-b rounded-t-lg border-gray-300 hover:bg-primary-90 hover:text-white">
+                          Lihat
+                        </button>
+                      </Link>
+                      <Link to={`/artikel/detail/${idArticleSelected}`}>
+                        <button className="w-full px-4 py-2 border-b border-gray-300 hover:bg-primary-90 hover:text-white">
+                          Edit
+                        </button>
+                      </Link>
+                      <button
+                        onClick={(e) => openModalDeleteArticle(e)}
+                        className="w-full px-4 py-2 hover:bg-primary-90 hover:text-white rounded-b-lg"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                  </div>
+                )}
               </td>
             </tr>
           ))}
