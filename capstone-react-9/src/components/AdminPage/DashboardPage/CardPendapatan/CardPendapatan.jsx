@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { getToken } from '../../../../service/accessCookie';
 
@@ -58,9 +59,6 @@ export default function CardPendapatan() {
       className="flex flex-col items-start self-stretch gap-1"
     >
   </div><div>Memuat data pendapatan...</div>;
-      {/* <h1 className="text-xl font-bold leading-7">
-        Rp {totalPendapatan.toLocaleString('id-ID')}
-      </h1> */}
       <h1 className="text-sm font-medium text-netral-90">
         Pemasukan dalam 30 hari terakhir
       </h1>
@@ -77,9 +75,9 @@ export default function CardPendapatan() {
         <h1 className="text-sm font-semibold">Pemasukan</h1>
       </div>
       <div className="">
-        <a className="text-primary-90 rounded-lg" href="">
+        <Link className="text-primary-90 rounded-lg" href="">
           Detail
-        </a>
+        </Link>
       </div>
     </div>
     <div
@@ -106,9 +104,9 @@ export default function CardPendapatan() {
           <h1 className="text-sm font-semibold">Pemasukan</h1>
         </div>
         <div className="">
-          <a className="text-primary-90 rounded-lg" href="">
+          <Link to={"/transaksi"} className="text-primary-90 rounded-lg" href="">
             Detail
-          </a>
+          </Link>
         </div>
       </div>
       <div

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { getToken } from '../../../../service/accessCookie';
 
@@ -34,24 +35,24 @@ export default function CardTabelProduk() {
     >
       <div className="flex justify-between items-center self-stretch">
         <h1 className="text-xl font-semibold">Produk Terbaru</h1>
-        <a href="" className="text-primary-90 rounded-lg">
+        <Link to={"/produk"} className="text-primary-90 rounded-lg">
           Detail
-        </a>
+        </Link>
       </div>
       <div>
         <table>
           <thead
-            style={{ height: "31px", width: "489px" }}
-            className="flex gap-5 px-2 items-center border-b border-primary-70"
+            style={{ height: "31px" }}
+            className="flex gap-5 items-center border-b w-full border-primary-70"
           >
             <th
-              style={{ width: "44px" }}
-              className="flex items-start text-sm font-medium"
+              style={{ width: "55px" }}
+              className="flex items-start text-sm font-medium pl-2"
             >
               Foto
             </th>
             <th
-              style={{ width: "500px" }}
+              style={{ width: "415px" }}
               className="flex items-start text-sm font-medium"
             >
               Nama Produk

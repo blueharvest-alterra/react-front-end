@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { getToken } from '../../../../service/accessCookie';
 
@@ -32,26 +33,26 @@ export default function CardTabelArtikel() {
     <div style={{ height: '310px'}} className='flex flex-col gap-2 bg-white p-4 rounded-2xl w-[50%]'>
       <div className='flex justify-between items-center self-stretch'>
         <h1 className='text-xl font-semibold'>Artikel Terbaru</h1>
-        <a href="" className='text-primary-90 rounded-lg'>Detail</a>
+        <Link to={"/artikel"} className='text-primary-90 rounded-lg'>Detail</Link>
       </div>
       <div>
-        <table>
-          <thead style={{ height: '31px', width: '540px' }} className='flex gap-5 px-2 border-b border-primary-70 items-center'>
-            <th style={{ width: '44px' }} className='flex items-start text-sm font-medium'>Foto</th>
-            <th style={{ width: '160px' }} className='flex items-start text-sm font-medium'>Judul</th>
-            <th style={{ width: '110px' }} className='flex items-start text-sm font-medium'>Tanggal</th>
+        <table className='w-full'>
+          <thead style={{ height: '31px'}} className='flex gap-5 px-2 border-b border-primary-70 items-center'>
+            <th style={{ width: '84px' }} className='flex items-start text-sm font-medium'>Foto</th>
+            <th style={{ width: '260px' }} className='flex items-start text-sm font-medium'>Judul</th>
+            <th style={{ width: '210px' }} className='flex items-start text-sm font-medium'>Tanggal</th>
             <th style={{ width: '' }} className='flex items-start text-sm font-medium'>Penulis</th>
           </thead>
           <tbody>
             {artikelData.map((artikel) => (
               <tr key={artikel.id} style={{ height: '60px' }} className='flex gap-5 px-1 py-2 items-center border-b border-primary-70'>
-                <td style={{ width: '50px' }}>
+                <td style={{ width: '84px' }}>
                   <img src={artikel.picture} alt="" style={{ height: '40px', width: '40px' }} />
                 </td>
-                <td style={{ width: '160px' }}>
+                <td style={{ width: '260px' }}>
                   <p className='text-sm font-medium'>{artikel.title}</p>
                 </td>
-                <td style={{ width: '110px' }}>
+                <td style={{ width: '210px' }}>
                   <p className='text-sm font-mediaType'>{artikel.createdAt ? new Date(artikel.createdAt).toLocaleDateString() : '-'}</p>  {/* Handle missing createdAt gracefully */}
                 </td>
                 <td style={{ width: '' }}>

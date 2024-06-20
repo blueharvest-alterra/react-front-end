@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { getToken } from '../../../../service/accessCookie';
 
@@ -37,9 +38,9 @@ export default function CardTotalProduk() {
           <h1 className="text-sm font-semibold">Total Produk</h1>
         </div>
         <div className="">
-          <a className="text-primary-90 rounded-lg" href="">
+          <Link to={"/produk"} className="text-primary-90 rounded-lg" href="">
             Detail
-          </a>
+          </Link>
         </div>
       </div>
       <div
