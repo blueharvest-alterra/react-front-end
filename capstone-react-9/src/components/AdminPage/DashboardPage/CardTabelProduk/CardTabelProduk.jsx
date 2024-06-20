@@ -41,17 +41,17 @@ export default function CardTabelProduk() {
       <div>
         <table>
           <thead
-            style={{ height: "31px", width: "489px" }}
-            className="flex gap-5 px-2 items-center border-b border-primary-70"
+            style={{ height: "31px" }}
+            className="flex gap-5 items-center border-b w-full border-primary-70"
           >
             <th
-              style={{ width: "44px" }}
-              className="flex items-start text-sm font-medium"
+              style={{ width: "55px" }}
+              className="flex items-start text-sm font-medium pl-2"
             >
               Foto
             </th>
             <th
-              style={{ width: "500px" }}
+              style={{ width: "415px" }}
               className="flex items-start text-sm font-medium"
             >
               Nama Produk
