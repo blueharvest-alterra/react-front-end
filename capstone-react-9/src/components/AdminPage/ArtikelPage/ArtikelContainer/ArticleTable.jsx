@@ -178,7 +178,7 @@ const ArticleTable = () => {
         </thead>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr key={index} className="cursor-pointer relative">
+            <tr key={index} className="relative">
               <td className="border-b border-black py-6 px-4 text-lg">
                 {(currentPage - 1) * itemsPerPage + index + 1}
               </td>

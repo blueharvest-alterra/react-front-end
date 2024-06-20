@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { getToken } from "../../../../../service/accessCookie";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ContainerDetailEditProduct = () => {
+  const navigate = useNavigate()
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [name, setName] = useState("");
@@ -33,7 +36,7 @@ const ContainerDetailEditProduct = () => {
         setProduct(data.data);
         setName(data.data.name);
         setHarga(data.data.price);
-        setStok(data.data.stock || ""); 
+        setStok(data.data.stock || "");
         setDesc(data.data.description);
         setImage(data.data.thumbnail || null);
       } catch (error) {
@@ -68,9 +71,11 @@ const ContainerDetailEditProduct = () => {
 
       if (response.ok) {
         const result = await response.json();
+        navigate("/produk")
         console.log("Edit successful:", result);
       } else {
         console.error("Edit failed:", response.statusText);
+        alert("berikan input yang benar")
       }
     } catch (error) {
       console.error("Error editing product:", error);
@@ -144,9 +149,11 @@ const ContainerDetailEditProduct = () => {
           >
             Simpan
           </button>
-          <button className="px-16 py-3 border border-primary-90  font-medium rounded-lg">
-            Batal
-          </button>
+          <Link to={"/produk"}>
+            <button className="px-16 py-3 border border-primary-90  font-medium rounded-lg">
+              Batal
+            </button>
+          </Link>
         </div>
         <hr className="border border-[#D1D5DB]" />
       </form>
