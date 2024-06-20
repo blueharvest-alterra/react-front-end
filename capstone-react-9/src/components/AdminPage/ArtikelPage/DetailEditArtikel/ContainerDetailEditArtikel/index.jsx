@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import { getToken } from "../../../../../service/accessCookie";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const url = "https://blueharvest.irvansn.com/v1/articles";
 
 const ContainerDetailEditArtikel = () => {
+  const navigate = useNavigate()
   const { id } = useParams();
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
@@ -66,13 +67,15 @@ const ContainerDetailEditArtikel = () => {
         body: formData,
       });
 
-      if (!response.ok) {
+      const data = await response.json()
+
+      if (!data.status) {
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json();
       console.log(data);
       console.log("Article updated successfully");
+      navigate("/artikel")
     } catch (error) {
       console.error("Error updating article:", error);
     }
