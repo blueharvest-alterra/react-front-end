@@ -26,26 +26,28 @@ const ContainerProduct = () => {
     setIsModalAddProductOpen(true);
   };
 
-  const addProduct = async () => {
+  const addProduct = async (e) => {
+    e.preventDefault()
     try {
       const token = getToken();
-      console.log(idProductDelete); 
-  
+
+      // menyesuaikan dengan field BE
       const productData = new FormData();
       productData.append("name", "test");
       productData.append("price", 12222);
       productData.append("status", "available");
       productData.append("description", "test");
-      productData.append("thumbnail", thumbnailFile);
+      productData.append("thumbnail", image);
   
-      const response = await fetch(`${url}/${idProductDelete}`, {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
         },
         body: productData,
       });
-  
+
+      const data = await response.json()  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Failed to post product: ${errorData.message}`);
