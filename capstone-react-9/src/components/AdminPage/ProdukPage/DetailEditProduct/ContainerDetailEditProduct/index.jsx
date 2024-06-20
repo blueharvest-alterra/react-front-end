@@ -104,7 +104,7 @@ const ContainerDetailEditProduct = () => {
       <form className="flex flex-col gap-4" onSubmit={handleEdit}>
         <div className="flex flex-col gap-4">
           <label htmlFor="image">Gambar Produk</label>
-          <div className="max-w-[1042px] max-h-[329px] rounded-lg overflow-hidden">
+          <div className="max-w-full max-h-[329px] rounded-lg overflow-hidden">
             {urlImage && (
               <img
                 className="w-full h-full object-cover cursor-pointer"
