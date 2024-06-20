@@ -63,9 +63,9 @@ const ProductTable = () => {
 
   console.log(products);
 
-  const openModalDeleteProduct = (id) => {
+  const openModalDeleteProduct = (e) => {
+    e.preventDefault()
     setIsModalDeleteProductOpen(true);
-    setIdProductSelected(id);
   };
 
   const deleteProduct = async () => {
@@ -191,7 +191,7 @@ const ProductTable = () => {
           {currentItems.map((item, index) => (
             <tr key={index} className="cursor-pointer relative">
               <td className="border-b border-black py-6 px-4 text-lg">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
+                {(currentPage - 1) * itemsPerPage + index + 1}
               </td>
               <td className="border-b truncate max-w-4 border-black py-2 px-4 text-lg">
                 {item.name}
@@ -206,9 +206,7 @@ const ProductTable = () => {
                 {item.terjual}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                
-                  {formatDate(item.updated_at)}
-                
+                {formatDate(item.updated_at)}
               </td>
               <td className="border-b border-black py-2 pl-7 text-lg relative">
                 <button
@@ -251,7 +249,10 @@ const ProductTable = () => {
                         Edit
                       </button>
                     </Link>
-                    <button className="w-full px-4 py-2 hover:bg-primary-90 hover:text-white rounded-b-lg">
+                    <button
+                      onClick={(e) => openModalDeleteProduct(e)}
+                      className="w-full px-4 py-2 hover:bg-primary-90 hover:text-white rounded-b-lg"
+                    >
                       Hapus
                     </button>
                   </div>
