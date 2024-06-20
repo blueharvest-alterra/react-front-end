@@ -8,13 +8,14 @@ const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ProductTable = () => {
   const navigate = useNavigate();
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-
   const [products, setProducts] = useState();
   const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] =
     useState(false);
-  const [idProductDelete, setIdProductDelete] = useState();
+  const [isModalActionsOpen, setIsModalActionsOpen] = useState(false);
+  const [idProductSelected, setIdProductSelected] = useState();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const totalPages = Math.ceil(products ? products.length / itemsPerPage : []);
 
@@ -64,14 +65,14 @@ const ProductTable = () => {
 
   const openModalDeleteProduct = (id) => {
     setIsModalDeleteProductOpen(true);
-    setIdProductDelete(id);
+    setIdProductSelected(id);
   };
 
   const deleteProduct = async () => {
     try {
       const token = getToken();
-      console.log(idProductDelete);
-      const response = await fetch(`${url}/${idProductDelete}`, {
+      console.log(idProductSelected);
+      const response = await fetch(`${url}/${idProductSelected}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -84,12 +85,12 @@ const ProductTable = () => {
       }
 
       console.log("Product deleted successfully");
-      setIdProductDelete();
+      setIdProductSelected();
       setIsModalDeleteProductOpen(false);
       fetchData();
     } catch (error) {
       console.error("Error deleting product:", error);
-      setIdProductDelete();
+      setIdProductSelected();
     }
   };
 
@@ -97,10 +98,12 @@ const ProductTable = () => {
     setIsModalDeleteProductOpen(false);
   };
 
-  // const navigateToProduct = (id) => {
-  //   // navigate(`/product/detail/${id}`);
-  //   navigate(`/produk/detail/${id}`);
-  // };
+  const openModalActions = (id) => {
+    setIsModalActionsOpen(true);
+    setIdProductSelected(id);
+  };
+
+  const closeModalActions = () => {};
 
   return (
     <div className="overflow-x-auto">
@@ -214,7 +217,7 @@ const ProductTable = () => {
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
-                    openModalDeleteProduct(item.id);
+                    openModalActions(item.id);
                   }}
                   className="text-blue-500 hover:underline relative"
                 >
@@ -239,10 +242,20 @@ const ProductTable = () => {
                     />
                   </svg>
                 </button>
+                
               </td>
+              
             </tr>
+            
           ))}
         </tbody>
+        {isModalActionsOpen && (
+                  <div className="absolute top-[380px] right-44 text-[#6B7280] bg-white flex flex-col text-center rounded-lg">
+                    <button className="px-4 py-[7px] border-b border-[#BEBEBE]  hover:bg-primary-90 hover:text-white" >Lihat</button>
+                    <button className="px-4 py-[7px] border-b border-[#BEBEBE]  hover:bg-primary-90 hover:text-white">Edit</button>
+                    <button className="px-4 py-[7px] hover:bg-primary-90 hover:text-white">Hapus</button>
+                  </div>
+                )}
       </table>
       <div className="mt-[35px] flex justify-end">
         <Pagination

@@ -172,7 +172,7 @@ const ArticleTable = () => {
             <tr
               key={index}
               className="cursor-pointer"
-              onClick={() => (window.location.href = `detail/${item.id}`)}
+              onClick={() => (window.location.href = `artikel/detail/${item.id}`)}
             >
               <td className="border-b border-black py-6 px-4 text-lg">
                 {(currentPage - 1) * itemsPerPage + index + 1}
