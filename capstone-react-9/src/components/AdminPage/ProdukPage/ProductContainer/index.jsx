@@ -189,11 +189,13 @@ const ContainerProduct = () => {
                 <label className="block text-sm mb-4">Gambar Produk</label>
                 {imagePreview ? (
                   <div>
-                    <img
-                      src={imagePreview}
-                      alt="Product Preview"
-                      className="mb-4 max-w-full h-auto"
-                    />
+                    <div className="max-w-full max-h-[416px] overflow-hidden">
+                      <img
+                        src={imagePreview}
+                        alt="Product Preview"
+                        className="mb-4 w-full h-auto"
+                      />
+                    </div>
                     <button
                       onClick={() => setImagePreview(null)}
                       className="text-red-500"
