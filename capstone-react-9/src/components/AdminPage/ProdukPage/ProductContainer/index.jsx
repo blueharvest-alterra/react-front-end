@@ -29,14 +29,14 @@ const ContainerProduct = () => {
   const addProduct = async () => {
     try {
       const token = getToken();
-      console.log(idProductDelete);  // Pastikan variabel idProductDelete sudah didefinisikan
+      console.log(idProductDelete); 
   
       const productData = new FormData();
       productData.append("name", "test");
       productData.append("price", 12222);
       productData.append("status", "available");
       productData.append("description", "test");
-      productData.append("thumbnail", thumbnailFile); // thumbnailFile adalah file yang ingin diunggah
+      productData.append("thumbnail", thumbnailFile);
   
       const response = await fetch(`${url}/${idProductDelete}`, {
         method: "POST",

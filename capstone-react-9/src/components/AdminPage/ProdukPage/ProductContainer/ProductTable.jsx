@@ -99,8 +99,7 @@ const ProductTable = () => {
   };
 
   const openModalActions = (id) => {
-    setIsModalActionsOpen(true);
-    setIdProductSelected(id);
+    setIdProductSelected((prev) => (prev === id ? null : id));
   };
 
   const closeModalActions = () => {};
@@ -190,30 +189,28 @@ const ProductTable = () => {
         </thead>
         <tbody>
           {currentItems.map((item, index) => (
-            <tr key={index} className="cursor-pointer">
+            <tr key={index} className="cursor-pointer relative">
               <td className="border-b border-black py-6 px-4 text-lg">
-                <Link to={`/produk/detail/${item.id}`}>
                   {(currentPage - 1) * itemsPerPage + index + 1}
-                </Link>
               </td>
               <td className="border-b truncate max-w-4 border-black py-2 px-4 text-lg">
-                <Link to={`/produk/detail/${item.id}`}>{item.name}</Link>
+                {item.name}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                <Link to={`/produk/detail/${item.id}`}>{item.price}</Link>
+                {item.price}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                <Link to={`/produk/detail/${item.id}`}>{item.persediaan}</Link>
+                {item.persediaan}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                <Link to={`/produk/detail/${item.id}`}>{item.terjual}</Link>
+                {item.terjual}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                <Link to={`/produk/detail/${item.id}`}>
+                
                   {formatDate(item.updated_at)}
-                </Link>
+                
               </td>
-              <td className="border-b border-black py-2 pl-7 text-lg">
+              <td className="border-b border-black py-2 pl-7 text-lg relative">
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
@@ -242,20 +239,27 @@ const ProductTable = () => {
                     />
                   </svg>
                 </button>
-                
-              </td>
-              
-            </tr>
-            
-          ))}
-        </tbody>
-        {isModalActionsOpen && (
-                  <div className="absolute top-[380px] right-44 text-[#6B7280] bg-white flex flex-col text-center rounded-lg">
-                    <button className="px-4 py-[7px] border-b border-[#BEBEBE]  hover:bg-primary-90 hover:text-white" >Lihat</button>
-                    <button className="px-4 py-[7px] border-b border-[#BEBEBE]  hover:bg-primary-90 hover:text-white">Edit</button>
-                    <button className="px-4 py-[7px] hover:bg-primary-90 hover:text-white">Hapus</button>
+                {idProductSelected === item.id && (
+                  <div className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg">
+                    <Link to={`/produk/detail/${idProductSelected}`}>
+                      <button className="w-full px-4 py-2 border-b border-gray-300 hover:bg-primary-90 hover:text-white rounded-t-lg">
+                        Lihat
+                      </button>
+                    </Link>
+                    <Link to={`/produk/detail/${idProductSelected}`}>
+                      <button className="w-full px-4 py-2 border-b border-gray-300 hover:bg-primary-90 hover:text-white">
+                        Edit
+                      </button>
+                    </Link>
+                    <button className="w-full px-4 py-2 hover:bg-primary-90 hover:text-white rounded-b-lg">
+                      Hapus
+                    </button>
                   </div>
                 )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
       <div className="mt-[35px] flex justify-end">
         <Pagination
