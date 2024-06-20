@@ -78,7 +78,7 @@ const ContainerDetailEditProduct = () => {
   };
 
   return (
-    <div className="bg-white p-9 mr-8 flex flex-col gap-[38px] mb-6">
+    <div className="bg-white w-full p-9 flex flex-col gap-[38px] mb-6">
       <h1 className="text-[30px] font-semibold">Produk</h1>
       <form className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
