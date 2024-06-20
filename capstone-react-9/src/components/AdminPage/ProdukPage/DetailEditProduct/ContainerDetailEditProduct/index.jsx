@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getToken } from "../../../../../service/accessCookie";
-import { useNavigate, useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ContainerDetailEditProduct = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [name, setName] = useState("");
@@ -15,6 +13,8 @@ const ContainerDetailEditProduct = () => {
   const [stok, setStok] = useState("");
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState(null);
+  const [urlImage, setUrlImage] = useState("");
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -38,7 +38,7 @@ const ContainerDetailEditProduct = () => {
         setHarga(data.data.price);
         setStok(data.data.stock || "");
         setDesc(data.data.description);
-        setImage(data.data.thumbnail || null);
+        setUrlImage(data.data.thumbnail || "");
       } catch (error) {
         console.error("Failed to fetch product:", error);
       }
@@ -69,33 +69,56 @@ const ContainerDetailEditProduct = () => {
         body: formData,
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        navigate("/produk")
-        console.log("Edit successful:", result);
+      const data = await response.json();
+      if (data.status) {
+        navigate("/produk");
+        console.log("Edit successful:", data);
       } else {
-        console.error("Edit failed:", response.statusText);
-        alert("berikan input yang benar")
+        console.error("Edit failed:", data.message);
+        alert("Please provide valid input.");
       }
     } catch (error) {
       console.error("Error editing product:", error);
     }
   };
 
+  const handleImageClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUrlImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="bg-white w-full p-9 flex flex-col gap-[38px] mb-6">
       <h1 className="text-[30px] font-semibold">Produk</h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleEdit}>
         <div className="flex flex-col gap-4">
           <label htmlFor="image">Gambar Produk</label>
           <div className="max-w-[1042px] max-h-[329px] rounded-lg overflow-hidden">
-            {product && (
+            {urlImage && (
               <img
-                className="w-full h-full object-cover"
-                src={product.thumbnail}
-                alt=""
+                className="w-full h-full object-cover cursor-pointer"
+                src={urlImage}
+                alt="Product Thumbnail"
+                onClick={handleImageClick}
               />
             )}
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
           </div>
         </div>
         <div className="flex gap-4">
@@ -144,13 +167,13 @@ const ContainerDetailEditProduct = () => {
         </div>
         <div className="flex gap-6 justify-end">
           <button
-            onClick={handleEdit}
-            className="px-12 py-3 bg-primary-90 text-white font-medium rounded-lg "
+            type="submit"
+            className="px-12 py-3 bg-primary-90 text-white font-medium rounded-lg"
           >
             Simpan
           </button>
           <Link to={"/produk"}>
-            <button className="px-16 py-3 border border-primary-90  font-medium rounded-lg">
+            <button className="px-16 py-3 border border-primary-90 font-medium rounded-lg">
               Batal
             </button>
           </Link>
