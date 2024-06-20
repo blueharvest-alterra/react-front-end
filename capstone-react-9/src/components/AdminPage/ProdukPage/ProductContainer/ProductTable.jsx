@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { getToken } from "../../../../service/accessCookie";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../../service/formatDate";
@@ -98,6 +98,21 @@ const ProductTable = () => {
   const openModalActions = (id) => {
     setIdProductSelected((prev) => (prev === id ? null : id));
   };
+
+  const modalActions = useRef()
+
+  const handleClickOutside = (event) => {
+    if (modalActions.current && !modalActions.current.contains(event.target)) {
+      setIdProductSelected()
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="overflow-x-auto">
@@ -233,7 +248,9 @@ const ProductTable = () => {
                   </svg>
                 </button>
                 {idProductSelected === item.id && (
-                  <div className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg">
+                  <div
+                  ref={modalActions}
+                  className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg">
                     <Link to={`/produk/detail/${idProductSelected}`}>
                       <button className="w-full px-4 py-2 border-b border-gray-300 hover:bg-primary-90 hover:text-white rounded-t-lg">
                         Lihat

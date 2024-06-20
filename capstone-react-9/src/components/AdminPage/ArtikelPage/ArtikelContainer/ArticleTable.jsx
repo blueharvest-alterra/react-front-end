@@ -45,8 +45,6 @@ const ArticleTable = () => {
     fetchArticel();
   }, []);
 
-  console.log(article);
-
   const openModalDeleteArticle = (id) => {
     setIsModalDeleteArticleOpen(true);
     setIdArticleSelected(id);
@@ -80,7 +78,6 @@ const ArticleTable = () => {
   };
 
   const openModalActions = (id) => {
-    console.log(id);
     setIdArticleSelected((prev) => (prev === id ? null : id));
   };
 
