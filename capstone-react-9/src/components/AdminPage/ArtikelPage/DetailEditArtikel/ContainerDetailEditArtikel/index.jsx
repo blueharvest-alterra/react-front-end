@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getToken } from "../../../../../service/accessCookie";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { Link } from "react-router-dom";
 
 const url = "https://blueharvest.irvansn.com/v1/articles";
 
@@ -146,12 +147,14 @@ const ContainerDetailEditArtikel = () => {
           >
             Simpan
           </button>
-          <button
-            type="button"
-            className="border border-primary-90 text-secondary px-20 py-3 rounded-md"
-          >
-            Batal
-          </button>
+          <Link to={"/artikel"}>
+            <button
+              type="button"
+              className="border border-primary-90 text-secondary px-20 py-3 rounded-md"
+            >
+              Batal
+            </button>
+          </Link>
         </div>
       </form>
     </div>
