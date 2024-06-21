@@ -40,7 +40,7 @@ export default function CardTabelProduk() {
         </Link>
       </div>
       <div>
-        <table>
+        <table className='w-full'>
           <thead
             style={{ height: "31px" }}
             className="flex gap-5 items-center border-b w-full border-primary-70"

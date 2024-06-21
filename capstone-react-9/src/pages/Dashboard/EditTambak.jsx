@@ -7,27 +7,39 @@ import CardMonitoring from "./CardMonitoring.jsx";
 import Cookies from "js-cookie";
 
 const EditTambak = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({
+    id: "",
+    title: "",
+    description: "",
+    picture: "",
+  });
   const [fileName, setFileName] = useState("");
+  const [filePreview, setFilePreview] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { id } = useParams();
-    const token = Cookies.get("token");
+  const token = Cookies.get("token");
+
   useEffect(() => {
     const fetchData = async () => {
-    
-      console.log(token);
       try {
         const response = await axios.get(
-          `https://blueharvest.irvansn.com/v1/farmmonitors/farm/${id}`,
+          `https://blueharvest.irvansn.com/v1/farms/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        if (response.data.status) {
-          setData(response.data.data["farm-monitor"][0]);
+        if (response.data && response.data.data) {
+          setData({
+            id: response.data.data.id,
+            title: response.data.data.title,
+            description: response.data.data.description,
+            picture: response.data.data.picture,
+          });
+          setFileName(response.data.data.picture);
+          setFilePreview(response.data.data.picture); // Menyimpan URL gambar yang sudah ada
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -35,11 +47,54 @@ const EditTambak = () => {
     };
 
     fetchData();
-  }, []);
+  }, [id, token]);
 
   const handleFileChange = (event) => {
-    setFileName(event.target.files[0].name);
+    const file = event.target.files[0];
+    setFileName(file.name);
+    setData({
+      ...data,
+      picture: file,
+    });
+
+    // Membuat URL untuk pratinjau gambar
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFilePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
+
+  const handleChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  try {
+    const payload = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+    };
+
+    await axios.put(`https://blueharvest.irvansn.com/v1/farms/${id}`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    alert("Data berhasil disimpan!");
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    alert("Terjadi kesalahan saat menyimpan data.");
+  }
+};
+
 
   const handleEditClick = () => {
     setIsModalOpen(true);
@@ -59,54 +114,116 @@ const EditTambak = () => {
             <div className="content">
               <form
                 className="flex justify-between gap-5"
-                // onSubmit={handleSubmit}
+                onSubmit={handleSubmit}
               >
                 <div className="w-2/4">
-                  <div className="mb-5">
-                    <label className="block text-lg mb-2" htmlFor="name">
+                  {/* <div className="mb-5">
+                    <label className="block text-lg mb-2" htmlFor="picture">
                       Gambar
                     </label>
-                    <label
-                      htmlFor="dropzone-file"
-                      className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-                    >
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        {!fileName && (
-                          <svg
-                            className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 20 16"
-                          >
-                            <path
-                              stroke="currentColor"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                            />
-                          </svg>
-                        )}
-                        {fileName ? (
-                          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                            {fileName}
-                          </p>
+                    <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6 w-64 h-64 border">
+                        {filePreview ? (
+                          <img
+                            src={filePreview}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                          />
                         ) : (
-                          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                            <span className="font-semibold">
-                              Masukkan Cover Gambar
-                            </span>
-                          </p>
+                          <>
+                            <svg
+                              className="w-8 h-8 mb-4 text-gray-500"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 20 16"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M13 13h3a3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                              />
+                            </svg>
+                            <p className="mb-2 text-sm text-gray-500">
+                              <span className="font-semibold">
+                                Masukkan Cover Gambar
+                              </span>
+                            </p>
+                          </>
                         )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          id="dropzone-file"
+                        />
+                        <label
+                          htmlFor="dropzone-file"
+                          className="cursor-pointer mt-2 text-blue-500 hover:underline"
+                        >
+                          Pilih Gambar
+                        </label>
                       </div>
-                      <input
-                        id="dropzone-file"
-                        type="file"
-                        className="hidden"
-                        onChange={handleFileChange}
-                      />
+                    </div>
+                  </div> */}
+
+                  <div className="mb-8">
+                    <label
+                      className="block text-xl font-medium mb-3"
+                      htmlFor="picture"
+                    >
+                      Gambar
                     </label>
+                    <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100 transition duration-200 ease-in-out">
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6 w-full h-full">
+                        {filePreview ? (
+                          <img
+                            src={filePreview}
+                            alt="Preview"
+                            className="w-full h-full object-cover rounded-lg shadow-lg"
+                          />
+                        ) : (
+                          <>
+                            <svg
+                              className="w-12 h-12 mb-4 text-gray-500"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 20 16"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M13 13h3a3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                              />
+                            </svg>
+                            <p className="mb-2 text-sm text-gray-500">
+                              <span className="font-semibold">
+                                Masukkan Cover Gambar
+                              </span>
+                            </p>
+                          </>
+                        )}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          id="dropzone-file"
+                        />
+                        <label
+                          htmlFor="dropzone-file"
+                          className="cursor-pointer mt-2 text-blue-500 hover:underline"
+                        >
+                          Pilih Gambar
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="mb-5">
@@ -115,9 +232,9 @@ const EditTambak = () => {
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      // value={formData.name}
-                      // onChange={handleChange}
+                      name="title"
+                      value={data.title}
+                      onChange={handleChange}
                       className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light w-full"
                       placeholder="Nama Tambak"
                       required
@@ -130,12 +247,11 @@ const EditTambak = () => {
                     </label>
                     <input
                       type="text"
-                      name="name"
+                      // name="name"
                       // value={formData.name}
                       // onChange={handleChange}
                       className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light w-full"
                       placeholder="Alamat Tambak"
-                      required
                     />
                   </div>
                 </div>
@@ -147,9 +263,9 @@ const EditTambak = () => {
                     </label>
                     <div className="flex items-center gap-4">
                       <textarea
-                        name="amount"
-                        // value={formData.amount}
-                        // onChange={handleChange}
+                        name="description"
+                        value={data.description}
+                        onChange={handleChange}
                         className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light w-full h-32"
                         placeholder="Ikan bandeng adalah ikan, memiliki banyak nutrisi yang baik bagi tubuh"
                         rows="100"
@@ -172,7 +288,6 @@ const EditTambak = () => {
                         //   onChange={handleChange}
                         className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light w-full"
                         placeholder="Masukkan Nominal Harga"
-                        required
                       />
                     </div>
                   </div>
@@ -188,7 +303,6 @@ const EditTambak = () => {
                       // onChange={handleChange}
                       className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light w-full"
                       placeholder="Masukkan Jumlah Hasil Panen"
-                      required
                     />
                     <div className="flex justify-end space-x-4 mt-16">
                       <button

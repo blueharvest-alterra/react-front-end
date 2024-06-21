@@ -42,14 +42,12 @@ export default function TabelTambak() {
             },
           }
         );
-        console.log(response);
         setFarms(response.data.data.farms);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
-    console.log(farms);
   }, []);
 
   const handleIconClick = (farmId) => {
@@ -107,24 +105,24 @@ export default function TabelTambak() {
     }
   };
 
-  // const handleDelete = async (farmId) => {
-  //   console.log(farmId);
-  //   try {
-  //     await axios.delete(
-  //       `https://blueharvest.irvansn.com/v1/farms/${farmId}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-  //     setfarm((prevfarm) =>
-  //       prevfarm.filter((farm) => farm.id !== farmId)
-  //     );
-  //   } catch (error) {
-  //     console.error("Error deleting farm:", error);
-  //   }
-  // };
+  const handleDelete = async (farmId) => {
+    console.log(farmId);
+    try {
+      await axios.delete(
+        `https://blueharvest.irvansn.com/v1/farms/${farmId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setFarms((prevfarm) =>
+        prevfarm.filter((farm) => farm.id !== farmId)
+      );
+    } catch (error) {
+      console.error("Error deleting farm:", error);
+    }
+  };
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
