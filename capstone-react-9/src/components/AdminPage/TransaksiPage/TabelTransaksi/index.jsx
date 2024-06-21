@@ -16,7 +16,6 @@ export default function TabelTransaksi() {
         let page = 1;
         let totalPages = 1;
   
-        // Loop through all pages
         while (page <= totalPages) {
           const response = await axios.get(`https://blueharvest.irvansn.com/v1/transactions?page=${page}`, {
             headers: {
@@ -28,7 +27,6 @@ export default function TabelTransaksi() {
             const transactions = response.data.data.transactions;
             allTransactions = [...allTransactions, ...transactions];
   
-            // Update total pages if available in the response
             totalPages = response.data.data.totalPages || totalPages;
             page++;
           }
@@ -109,8 +107,8 @@ export default function TabelTransaksi() {
 
   return (
     <div className="relative mb-3 overflow-x-auto mt-3 bg-white shadow-md sm:rounded-lg">
-      <table className="text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style={{ width: '1162px', tableLayout: 'auto' }}>
-        <thead className="text-xs border-b text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <table className="w-full text-sm text-left rtl:text-right text-[#1B1B1B]">
+        <thead className="text-xs text-[#1B1B1B] uppercase border-b border-[#8C8C8C]">
           <tr>
             <th scope="col" className="px-6 py-3">No</th>
             <th scope="col" className="px-6 py-3">Nama</th>
@@ -122,8 +120,11 @@ export default function TabelTransaksi() {
         </thead>
         <tbody>
           {currentTransactions.map((transaction, index) => (
-            <tr key={transaction.id} className={`border-b text-darker-70 dark:border-gray-700 ${index % 2 === 0 ? 'bg-white dark:bg-gray-900' : 'bg-gray-50 dark:bg-gray-800'}`}>
-              <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+            <tr key={transaction.id} className="border-b border-[#8C8C8C]">
+              <th
+                scope="row"
+                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
                 {indexOfFirstTransaction + index + 1}
               </th>
               <td className="px-6 py-4">{transaction.customer.full_name}</td>
@@ -202,11 +203,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange, prevPage, nextPage,
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M0.821973 15.1148C0.653223 15.1148 0.512598 15.0586 0.371973 14.9461C0.118848 14.693 0.118848 14.2992 0.371973 14.0461L6.27822 7.99922L0.371973 1.98047C0.118848 1.72734 0.118848 1.33359 0.371973 1.08047C0.625098 0.827344 1.01885 0.827344 1.27197 1.08047L7.62822 7.54922C7.88135 7.80234 7.88135 8.19609 7.62822 8.44922L1.27197 14.918C1.15947 15.0305 0.990723 15.1148 0.821973 15.1148Z"
+            d="M0.821973 15.1148C0.653223 15.1148 0.512598 15.0586 0.371973 14.9461C0.118848 14.693 0.118848 14.2992 0.371973 14.0461L6.27822 7.99922L0.371973 1.95234C0.118848 1.69922 0.118848 1.30547 0.371973 1.05234C0.625098 0.799219 1.01885 0.799219 1.27197 1.05234L7.62822 7.52109C7.88135 7.77422 7.88135 8.16797 7.62822 8.42109L1.27197 14.8898C1.15948 15.0023 0.990723 15.1148 0.821973 15.1148Z"
             fill="#637381"
           />
         </svg>
       </button>
     </div>
   );
-}
+};
