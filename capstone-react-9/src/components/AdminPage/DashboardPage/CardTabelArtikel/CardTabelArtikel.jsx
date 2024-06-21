@@ -38,24 +38,24 @@ export default function CardTabelArtikel() {
       <div>
         <table className='w-full'>
           <thead style={{ height: '31px'}} className='flex gap-5 px-2 border-b border-primary-70 items-center'>
-            <th style={{ width: '84px' }} className='flex items-start text-sm font-medium'>Foto</th>
-            <th style={{ width: '260px' }} className='flex items-start text-sm font-medium'>Judul</th>
-            <th style={{ width: '210px' }} className='flex items-start text-sm font-medium'>Tanggal</th>
-            <th style={{ width: '' }} className='flex items-start text-sm font-medium'>Penulis</th>
+            <th style={{ width: '60px' }} className='flex items-start text-sm font-medium'>Foto</th>
+            <th style={{ width: '235px' }} className='flex items-start text-sm font-medium'>Judul</th>
+            <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Tanggal</th>
+            <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Penulis</th>
           </thead>
           <tbody>
             {artikelData.map((artikel) => (
               <tr key={artikel.id} style={{ height: '60px' }} className='flex gap-5 px-1 py-2 items-center border-b border-primary-70'>
-                <td style={{ width: '84px' }}>
+                <td style={{ width: '60px' }}>
                   <img src={artikel.picture} alt="" style={{ height: '40px', width: '40px' }} />
                 </td>
-                <td style={{ width: '260px' }}>
+                <td style={{ width: '250px' }}>
                   <p className='text-sm font-medium'>{artikel.title}</p>
                 </td>
-                <td style={{ width: '210px' }}>
+                <td style={{ width: '100px' }}>
                   <p className='text-sm font-mediaType'>{artikel.createdAt ? new Date(artikel.createdAt).toLocaleDateString() : '-'}</p>  {/* Handle missing createdAt gracefully */}
                 </td>
-                <td style={{ width: '' }}>
+                <td style={{ width: '100px' }}>
                   <p className='text-sm font-medium'>{artikel.author || '-'}</p>  {/* Handle missing author gracefully */}
                 </td>
               </tr>

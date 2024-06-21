@@ -52,7 +52,7 @@ export default function CardTabelProduk() {
               Foto
             </th>
             <th
-              style={{ width: "415px" }}
+              style={{ width: "250px" }}
               className="flex items-start text-sm font-medium"
             >
               Nama Produk
@@ -84,8 +84,9 @@ export default function CardTabelProduk() {
                     style={{ height: "40px", width: "40px" }}
                   />
                 </td>
-                <td style={{ whiteSpace: "normal", wordBreak: "break-word" }}>
-                  <p className="text-sm font-medium">{product.name}</p>
+                {/* <td style={{ whiteSpace: "normal", wordBreak: "break-word" }}> */}
+                <td style={{ width: '250px' }}>
+                  <p className="text-sm truncate font-medium">{product.name}</p>
                 </td>
                 <td style={{ width: "100px" }}>
                   <p className="text-sm font-medium">Rp {product.price}</p>
