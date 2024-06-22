@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { getToken } from "../../../../service/accessCookie";
 import { Link } from "react-router-dom";
+import { formatDate1 } from "../../../../service/formatDate";
 
 const ArticleTable = () => {
   const [article, setArticle] = useState([]);
@@ -81,7 +82,7 @@ const ArticleTable = () => {
     setIdArticleSelected((prev) => (prev === id ? null : id));
   };
 
-  const modalActions = useRef()
+  const modalActions = useRef();
 
   const handleClickOutside = (event) => {
     if (modalActions.current && !modalActions.current.contains(event.target)) {
@@ -186,7 +187,7 @@ const ArticleTable = () => {
                 {item.title}
               </td>
               <td className="border-b border-black py-6 px-4 text-lg">
-                {item.tanggal}
+                {formatDate1(item.created_at)}
               </td>
               <td className="border-b border-black py-6 pl-7 text-lg relative">
                 <button
@@ -220,8 +221,9 @@ const ArticleTable = () => {
                 {idArticleSelected === item.id && (
                   <div>
                     <div
-                    ref={modalActions}
-                    className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg">
+                      ref={modalActions}
+                      className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg"
+                    >
                       <Link to={`/artikel/detail/${idArticleSelected}`}>
                         <button className="w-full px-4 py-2 border-b rounded-t-lg border-gray-300 hover:bg-primary-90 hover:text-white">
                           Lihat
