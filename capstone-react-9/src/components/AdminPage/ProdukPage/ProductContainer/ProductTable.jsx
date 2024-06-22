@@ -209,8 +209,8 @@ const ProductTable = () => {
               <td className="border-b border-black py-2 px-4 text-lg">
                 {item.price}
               </td>
-              <td className="border-b border-black py-2 px-4 text-lg">
-                {item.persediaan}
+              <td className="border-b border-black py-2 max-w-4 px-4 text-lg">
+                <div className="bg-succes-30 border border-succes-70 w-fit px-4 py-2 text-center text-[16px] rounded-full">{item.status}</div>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
                 {item.terjual}
