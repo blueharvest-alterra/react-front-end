@@ -114,6 +114,16 @@ const ProductTable = () => {
     };
   }, []);
 
+  function translateAvailability(text) {
+    if (text === "available") {
+        return "Tersedia";
+    } else if (text === "unavailable") {
+        return "Tidak Tersedia";
+    } else {
+        return "Teks tidak dikenali";
+    }
+}
+
   return (
     <div className="overflow-x-auto">
       {isModalDeleteProductOpen && (
@@ -217,7 +227,7 @@ const ProductTable = () => {
                       : "bg-error-50 border-error-90"
                   } border w-fit px-4 py-2 text-center text-[16px] rounded-full`}
                 >
-                  {item.status}
+                  {translateAvailability(item.status)}
                 </div>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">

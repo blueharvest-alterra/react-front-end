@@ -155,7 +155,7 @@ const ContainerDetailEditProduct = () => {
                     onChange={() => setStatus("available")}
                     className="rounded"
                   />
-                  <label htmlFor="">Available</label>
+                  <label htmlFor="">Tersedia</label>
                 </div>
                 <div className="flex items-center gap-2">
                   <input
@@ -166,7 +166,7 @@ const ContainerDetailEditProduct = () => {
                     onChange={() => setStatus("unavailable")}
                     className="rounded"
                   />
-                  <label htmlFor="">Unavailable</label>
+                  <label htmlFor="">Tidak Tersedia</label>
                 </div>
               </div>
             </div>
