@@ -10,7 +10,7 @@ const ContainerDetailEditProduct = () => {
   const [product, setProduct] = useState(null);
   const [name, setName] = useState("");
   const [harga, setHarga] = useState("");
-  const [stok, setStok] = useState("");
+  const [status, setStatus] = useState("")
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState(null);
   const [urlImage, setUrlImage] = useState("");
@@ -36,7 +36,7 @@ const ContainerDetailEditProduct = () => {
         setProduct(data.data);
         setName(data.data.name);
         setHarga(data.data.price);
-        setStok(data.data.stock || "");
+        setStatus(data.data.status || "")
         setDesc(data.data.description);
         setUrlImage(data.data.thumbnail || "");
       } catch (error) {
@@ -54,7 +54,7 @@ const ContainerDetailEditProduct = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("price", harga);
-    formData.append("stock", stok);
+    formData.append("status", status);
     formData.append("description", desc);
     if (image) {
       formData.append("thumbnail", image);
@@ -145,13 +145,30 @@ const ContainerDetailEditProduct = () => {
             </div>
             <div className="flex flex-col gap-[10px]">
               <label htmlFor="stok">Stok</label>
-              <input
-                id="stok"
-                type="number"
-                value={stok}
-                onChange={(e) => setStok(e.target.value)}
-                className="px-5 py-3 rounded-md border-[#D9D9D9]"
-              />
+              <div className="flex items-center gap-40 text-sm">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="status"
+                    value="avaliable"
+                    checked={status == "available"}
+                    onChange={() => setStatus("available")}
+                    className="rounded"
+                  />
+                  <label htmlFor="">Available</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    name="status"
+                    value="unavailable"
+                    checked={status == "unavailable"}
+                    onChange={() => setStatus("unavailable")}
+                    className="rounded"
+                  />
+                  <label htmlFor="">Unavailable</label>
+                </div>
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-4 w-1/2">
