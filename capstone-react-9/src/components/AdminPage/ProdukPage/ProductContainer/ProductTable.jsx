@@ -61,7 +61,7 @@ const ProductTable = () => {
   }, []);
 
   const openModalDeleteProduct = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setIsModalDeleteProductOpen(true);
   };
 
@@ -99,11 +99,11 @@ const ProductTable = () => {
     setIdProductSelected((prev) => (prev === id ? null : id));
   };
 
-  const modalActions = useRef()
+  const modalActions = useRef();
 
   const handleClickOutside = (event) => {
     if (modalActions.current && !modalActions.current.contains(event.target)) {
-      setIdProductSelected()
+      setIdProductSelected();
     }
   };
 
@@ -210,7 +210,15 @@ const ProductTable = () => {
                 {item.price}
               </td>
               <td className="border-b border-black py-2 max-w-4 px-4 text-lg">
-                <div className="bg-succes-30 border border-succes-70 w-fit px-4 py-2 text-center text-[16px] rounded-full">{item.status}</div>
+                <div
+                  className={`${
+                    item.status === "available"
+                      ? "bg-succes-50 border-succes-70"
+                      : "bg-error-50 border-error-90"
+                  } border w-fit px-4 py-2 text-center text-[16px] rounded-full`}
+                >
+                  {item.status}
+                </div>
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
                 {item.terjual}
@@ -249,8 +257,9 @@ const ProductTable = () => {
                 </button>
                 {idProductSelected === item.id && (
                   <div
-                  ref={modalActions}
-                  className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg">
+                    ref={modalActions}
+                    className="absolute z-50 right-full top-1/2 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg"
+                  >
                     <Link to={`/produk/detail/${idProductSelected}`}>
                       <button className="w-full px-4 py-2 border-b border-gray-300 hover:bg-primary-90 hover:text-white rounded-t-lg">
                         Lihat
