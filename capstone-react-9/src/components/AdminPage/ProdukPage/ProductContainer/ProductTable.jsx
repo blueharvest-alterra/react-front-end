@@ -3,6 +3,7 @@ import { getToken } from "../../../../service/accessCookie";
 import { useNavigate } from "react-router-dom";
 import { formatDate } from "../../../../service/formatDate";
 import { Link } from "react-router-dom";
+import { formatRupiah } from "../../../../service/formatRupiah";
 
 const url = "https://blueharvest.irvansn.com/v1/products";
 
@@ -217,7 +218,7 @@ const ProductTable = () => {
                 {item.name}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
-                {item.price}
+                {formatRupiah(item.price)}
               </td>
               <td className="border-b border-black py-2 max-w-4 px-4 text-lg">
                 <div
