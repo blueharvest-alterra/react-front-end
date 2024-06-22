@@ -8,7 +8,7 @@ const url = "https://blueharvest.irvansn.com/v1/products";
 const ContainerProduct = () => {
   const [isModalAddProductOpen, setIsModalAddProductOpen] = useState(false);
   const [productName, setProductName] = useState("");
-  const [stok, setStok] = useState("");
+  const [status, setStatus] = useState("");
   const [price, setPrice] = useState("");
   const [desc, setDesc] = useState("");
   const [image, setImage] = useState(null);
@@ -17,7 +17,7 @@ const ContainerProduct = () => {
 
   const resetValue = () => {
     setProductName("");
-    setStok("");
+    setStatus("");
     setPrice("");
     setDesc("");
     setImage(null);
@@ -37,7 +37,7 @@ const ContainerProduct = () => {
       const productData = new FormData();
       productData.append("name", productName);
       productData.append("price", price);
-      productData.append("status", "available");
+      productData.append("status", status);
       productData.append("description", desc);
       productData.append("thumbnail", image);
 
@@ -134,13 +134,30 @@ const ContainerProduct = () => {
               </div>
               <div className="mb-5">
                 <label className="block text-sm mb-[10px]">Stok</label>
-                <input
-                  type="number"
-                  placeholder="Jumlah Stok Produk"
-                  value={stok}
-                  onChange={(e) => setStok(e.target.value)}
-                  className="w-full px-5 py-3 border border-gray-300 rounded-md"
-                />
+                <div className="flex items-center gap-40 text-sm">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="status"
+                      value="avaliable"
+                      checked = {status == "available"}
+                      onChange={() => setStatus("available")}
+                      className="rounded"
+                    />
+                    <label htmlFor="">Available</label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="status"
+                      value="unavailable"
+                      checked = {status == "unavailable"}
+                      onChange={() => setStatus("unavailable")}
+                      className="rounded"
+                    />
+                    <label htmlFor="">Unavailable</label>
+                  </div>
+                </div>
               </div>
               <div className="mb-5">
                 <label className="block text-sm mb-[10px]">Harga</label>
