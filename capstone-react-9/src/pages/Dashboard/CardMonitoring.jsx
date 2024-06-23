@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LogoAir from '../../assets/logo-air.svg';
 import LogoOksigen from "../../assets/logo-oksigen.svg";
-import LogoSuhu from "../.././assets/logo-suhu.svg";
+import LogoSuhu from "../../assets/logo-suhu.svg";
 import { getToken } from '../../service/accessCookie';
 
 export default function CardMonitoring() {
@@ -12,12 +12,12 @@ export default function CardMonitoring() {
     const fetchData = async () => {
       const token = getToken();
       try {
-        const response = await axios.get(`https://blueharvest.irvansn.com/v1/farmmonitors/farm/2d5f05ec-c41b-420d-8253-b4e7606bffcb`, {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-        if (response.data.status) {
+        const response = await axios.get("https://blueharvest.irvansn.com/v1/farmmonitors/farm/2d5f05ec-c41b-420d-8253-b4e7606bffcb", {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.data.status && response.data.data['farm-monitor'].length > 0) {
           setData(response.data.data['farm-monitor'][0]);
         }
       } catch (error) {
