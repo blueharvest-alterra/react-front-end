@@ -1,4 +1,3 @@
-// ./pages/Dashboard/EditTambak.js
 import { useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -11,9 +10,9 @@ const EditTambak = () => {
     id: "",
     title: "",
     description: "",
-    picture: "",
+    picture_file: "",
+    minimum_investment_amount: "",
   });
-  const [fileName, setFileName] = useState("");
   const [filePreview, setFilePreview] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -36,9 +35,10 @@ const EditTambak = () => {
             id: response.data.data.id,
             title: response.data.data.title,
             description: response.data.data.description,
-            picture: response.data.data.picture,
+            picture_file: response.data.data.picture,
+            minimum_investment_amount:
+              response.data.data.minimum_investment_amount,
           });
-          setFileName(response.data.data.picture);
           setFilePreview(response.data.data.picture); // Menyimpan URL gambar yang sudah ada
         }
       } catch (error) {
@@ -51,10 +51,9 @@ const EditTambak = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setFileName(file.name);
     setData({
       ...data,
-      picture: file,
+      picture_file: file,
     });
 
     // Membuat URL untuk pratinjau gambar
@@ -72,29 +71,79 @@ const EditTambak = () => {
     });
   };
 
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  try {
-    const payload = {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-    };
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     const response = await axios.put(
+  //       `https://blueharvest.irvansn.com/v1/farms/${id}`,
+  //       data,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+  //     console.log(response);
+  //   } catch (error) {
+  //     if (error.response) {
+  //       // Server merespons dengan status di luar jangkauan 2xx
+  //       console.error("Response error:", error.response.data);
+  //       alert(`Gagal memperbarui data: ${error.response.data.message}`);
+  //     } else if (error.request) {
+  //       // Permintaan dibuat tetapi tidak ada respons
+  //       console.error("No response:", error.request);
+  //       alert("Gagal memperbarui data: Tidak ada respons dari server.");
+  //     } else {
+  //       // Terjadi kesalahan saat mengatur permintaan
+  //       console.error("Error setting up request:", error.message);
+  //       alert(`Gagal memperbarui data: ${error.message}`);
+  //     }
+  //   }
+  // };
 
-    await axios.put(`https://blueharvest.irvansn.com/v1/farms/${id}`, payload, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("id", data.id);
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      if (data.picture_file instanceof File) {
+        formData.append("picture_file", data.picture_file);
+      }
+      formData.append(
+        "minimum_investment_amount",
+        data.minimum_investment_amount
+      );
 
-    alert("Data berhasil disimpan!");
-  } catch (error) {
-    console.error("Error submitting data:", error);
-    alert("Terjadi kesalahan saat menyimpan data.");
-  }
-};
-
+      const response = await axios.put(
+        `https://blueharvest.irvansn.com/v1/farms/${id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      if (error.response) {
+        // Server merespons dengan status di luar jangkauan 2xx
+        console.error("Response error:", error.response.data);
+        alert(`Gagal memperbarui data: ${error.response.data.message}`);
+      } else if (error.request) {
+        // Permintaan dibuat tetapi tidak ada respons
+        console.error("No response:", error.request);
+        alert("Gagal memperbarui data: Tidak ada respons dari server.");
+      } else {
+        // Terjadi kesalahan saat mengatur permintaan
+        console.error("Error setting up request:", error.message);
+        alert(`Gagal memperbarui data: ${error.message}`);
+      }
+    }
+  };
 
   const handleEditClick = () => {
     setIsModalOpen(true);
@@ -117,63 +166,10 @@ const handleSubmit = async (event) => {
                 onSubmit={handleSubmit}
               >
                 <div className="w-2/4">
-                  {/* <div className="mb-5">
-                    <label className="block text-lg mb-2" htmlFor="picture">
-                      Gambar
-                    </label>
-                    <div className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-gray-100">
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6 w-64 h-64 border">
-                        {filePreview ? (
-                          <img
-                            src={filePreview}
-                            alt="Preview"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <>
-                            <svg
-                              className="w-8 h-8 mb-4 text-gray-500"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 20 16"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M13 13h3a3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                              />
-                            </svg>
-                            <p className="mb-2 text-sm text-gray-500">
-                              <span className="font-semibold">
-                                Masukkan Cover Gambar
-                              </span>
-                            </p>
-                          </>
-                        )}
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleFileChange}
-                          className="hidden"
-                          id="dropzone-file"
-                        />
-                        <label
-                          htmlFor="dropzone-file"
-                          className="cursor-pointer mt-2 text-blue-500 hover:underline"
-                        >
-                          Pilih Gambar
-                        </label>
-                      </div>
-                    </div>
-                  </div> */}
-
                   <div className="mb-8">
                     <label
                       className="block text-xl font-medium mb-3"
-                      htmlFor="picture"
+                      htmlFor="picture_file"
                     >
                       Gambar
                     </label>
@@ -283,9 +279,9 @@ const handleSubmit = async (event) => {
                       <p className="font-semibold">Rp</p>
                       <input
                         type="number"
-                        name="amount"
-                        // value={formData.amount}
-                        //   onChange={handleChange}
+                        name="minimum_investment_amount"
+                        value={data.minimum_investment_amount}
+                        onChange={handleChange}
                         className="shadow-sm border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light w-full"
                         placeholder="Masukkan Nominal Harga"
                       />

@@ -16,6 +16,8 @@ export default function TabelTambak() {
     status: "",
     amount: "",
   });
+  const navigate = useNavigate();
+  const token = Cookies.get("token");
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -28,8 +30,6 @@ export default function TabelTambak() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  const token = Cookies.get("token");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +50,25 @@ export default function TabelTambak() {
     fetchData();
   }, []);
 
+  const handleEditClick = (farm) => {
+    navigate(`/tambak/edit/${farm.id}`);
+  };
+
+  const handleDelete = async (farmId) => {
+    console.log(farmId);
+    try {
+      await axios.delete(`https://blueharvest.irvansn.com/v1/farms/${farmId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setFarms((prevfarm) => prevfarm.filter((farm) => farm.id !== farmId));
+      console.log(farms);
+    } catch (error) {
+      console.error("Error deleting farm:", error);
+    }
+  };
+
   const handleIconClick = (farmId) => {
     setPopupVisible((prev) => (prev === farmId ? null : farmId));
   };
@@ -57,70 +76,6 @@ export default function TabelTambak() {
   const handleClickOutside = (event) => {
     if (popupRef.current && !popupRef.current.contains(event.target)) {
       setPopupVisible(null);
-    }
-  };
-  const navigate = useNavigate();
-  const handleEditClick = (farm) => {
-    console.log(farm);
-    navigate(`/tambak/edit/${farm.id}`);
-    // setFormData({
-    //   name: farm.name,
-    //   code: farm.code,
-    //   amount: farm.amount,
-    //   status: farm.status,
-    //   id: farm.id,
-    // });
-    // setIsModalOpen(true);
-  };
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: type === "checkbox" ? (checked ? value : "") : value,
-    }));
-  };
-
-
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedFormData = {
-      ...formData,
-      amount: parseInt(formData.amount),
-    };
-    try {
-      const response = await axios.put(
-        `https://blueharvest.irvansn.com/v1/farms/${updatedFormData.id}`,
-        updatedFormData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error updating farm:", error);
-    }
-  };
-
-  const handleDelete = async (farmId) => {
-    console.log(farmId);
-    try {
-      await axios.delete(
-        `https://blueharvest.irvansn.com/v1/farms/${farmId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setFarms((prevfarm) =>
-        prevfarm.filter((farm) => farm.id !== farmId)
-      );
-    } catch (error) {
-      console.error("Error deleting farm:", error);
     }
   };
 
@@ -140,7 +95,7 @@ export default function TabelTambak() {
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left rtl:text-right text-[#1B1B1B]">
-            <thead className="text-xs text-[#1B1B1B] uppercase border-b border-[#8C8C8C] text-center">
+            <thead className="text-xs text-[#1B1B1B] uppercase border-b border-[#8C8C8C]">
               <tr>
                 <th scope="col" className="px-6 py-3">
                   No
@@ -149,63 +104,36 @@ export default function TabelTambak() {
                   Nama Tambak
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Deskripsi
-                </th>
-                <th scope="col" className="px-6 py-3">
                   Harga Awal
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Gambar
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Status
+                <th scope="col" className="px-6 py-3 text-center">
+                  Alamat
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Aksi
                 </th>
               </tr>
             </thead>
-            <tbody className="text-center">
+            <tbody>
               {currentItems.map((farm, index) => (
                 <tr key={farm.id} className="border-b border-[#8C8C8C]">
-                  <td
+                  <th
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
                     {(currentPage - 1) * itemsPerPage + index + 1}
-                  </td>
-                  <td className="px-6 py-4 w-[20%]">{farm.title}</td>
-                  <td className="px-6 py-4 w-[20%]">{farm.description}</td>
-                  <td className="px-6 py-4 ">-</td>
+                  </th>
+                  <td className="px-6 py-4">{farm.title}</td>
                   <td className="px-6 py-4">
-                    <img
-                      src={farm.picture}
-                      className="w-36 max-w-xs h-auto max-h-52 mx-auto"
-                    />
+                    {farm.minimum_investment_amount}
                   </td>
-
-                  <td className="px-6 py-4">
-                    {/* <span
-                      className={`${
-                        farm.status === "available"
-                          ? "bg-[#74F1C4]"
-                          : "bg-[#FF3B3B]"
-                      } inline-block px-2 py-1 rounded-2xl`}
-                    >
-                      {farm.status}
-                    </span> */}
-                    <span
-                      className={`${
-                        farm.status === "available"
-                      } inline-block px-2 py-1 rounded-2xl`}
-                    >
-                      -
-                    </span>
+                  <td className="px-6 py-4 text-center">
+                    -
                   </td>
-                  <td className="flex space-x-2 relative h-52 max-h-52">
+                  <td className="px-6 py-4 flex space-x-2 relative">
                     <button
                       onClick={() => handleIconClick(farm.id)}
-                      className="text-gray-800 mx-auto"
+                      className="text-gray-800"
                     >
                       <svg
                         className="w-6 h-6 text-gray-800"
@@ -227,7 +155,7 @@ export default function TabelTambak() {
                     {popupVisible === farm.id && (
                       <div
                         ref={popupRef}
-                        className="absolute top-11 right-20 bg-white border border-gray-300 rounded-lg shadow-lg z-10"
+                        className="absolute -top-10 right-14 bg-white border border-gray-300 rounded-lg shadow-lg z-10"
                       >
                         <ul>
                           <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
