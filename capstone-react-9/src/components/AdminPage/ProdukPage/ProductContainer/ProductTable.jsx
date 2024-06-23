@@ -231,8 +231,8 @@ const ProductTable = () => {
                   {translateAvailability(item.status)}
                 </div>
               </td>
-              <td className="border-b border-black py-2 px-4 text-lg">
-                {item.terjual}
+              <td className="border-b pl-8 border-black py-2 px-4 text-lg">
+                {item.count_sold}
               </td>
               <td className="border-b border-black py-2 px-4 text-lg">
                 {formatDate(item.updated_at)}
