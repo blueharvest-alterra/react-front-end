@@ -22,27 +22,28 @@ const ArticleTable = () => {
     setCurrentPage(pageNumber);
   };
 
+  const fetchArticel = async () => {
+    const token = getToken();
+    console.log(token);
+    try {
+      const response = await fetch(
+        "https://blueharvest.irvansn.com/v1/articles",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      setArticle(data.data.articles);
+    } catch (error) {
+      console.log("error fetch artikel");
+    }
+  };
+
   useEffect(() => {
-    const fetchArticel = async () => {
-      const token = getToken();
-      console.log(token);
-      try {
-        const response = await fetch(
-          "https://blueharvest.irvansn.com/v1/articles",
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        setArticle(data.data.articles);
-      } catch (error) {
-        console.log("error fetch artikel");
-      }
-    };
     fetchArticel();
   }, []);
 
@@ -64,6 +65,7 @@ const ArticleTable = () => {
       );
 
       const data = await response.json();
+      fetchArticel()
       console.log(data);
       closeModalDeleteArticle();
     } catch {
