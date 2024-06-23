@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import ProductTable from "./ProductTable";
 import ModalAddProduct from "./ModalAddProduct";
 import { getToken } from "../../../../service/accessCookie";
@@ -55,6 +55,7 @@ const ContainerProduct = () => {
         throw new Error(`Failed to post product: ${errorData.message}`);
       }
 
+      fetchData()
       console.log("Product posted successfully");
       resetValue();
       closeModalAddProduct();
@@ -78,6 +79,20 @@ const ContainerProduct = () => {
     };
     reader.readAsDataURL(file);
   };
+
+  const fetchData = async () => {
+    try {
+      const token = getToken();
+      const products = await fetchProducts(token);
+      // setProducts(products.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-white w-full p-9 flex flex-col gap-[38px] mb-8">
