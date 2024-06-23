@@ -46,9 +46,8 @@ const ArticleTable = () => {
     fetchArticel();
   }, []);
 
-  const openModalDeleteArticle = (id) => {
+  const openModalDeleteArticle = () => {
     setIsModalDeleteArticleOpen(true);
-    setIdArticleSelected(id);
   };
 
   const deleteArticle = async () => {
@@ -68,7 +67,7 @@ const ArticleTable = () => {
       console.log(data);
       closeModalDeleteArticle();
     } catch {
-      console.log("delete product error");
+      console.log("delete article error");
       setIdArticleSelected();
     }
   };
@@ -86,7 +85,9 @@ const ArticleTable = () => {
 
   const handleClickOutside = (event) => {
     if (modalActions.current && !modalActions.current.contains(event.target)) {
-      setIdArticleSelected();
+      if (!isModalDeleteArticleOpen) {
+        setIdArticleSelected(null);
+      }
     }
   };
 
@@ -95,7 +96,7 @@ const ArticleTable = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isModalDeleteArticleOpen]);
 
   return (
     <div className="overflow-x-auto">
