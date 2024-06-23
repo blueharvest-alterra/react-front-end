@@ -9,22 +9,20 @@ const url = "https://blueharvest.irvansn.com/v1/products";
 
 const ProductTable = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState([]);
   const [isModalDeleteProductOpen, setIsModalDeleteProductOpen] =
     useState(false);
-  const [idProductSelected, setIdProductSelected] = useState();
+  const [idProductSelected, setIdProductSelected] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const totalPages = Math.ceil(products ? products.length / itemsPerPage : []);
+  const totalPages = Math.ceil(products.length / itemsPerPage);
 
-  const currentItems = products
-    ? products.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      )
-    : [];
+  const currentItems = products.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -61,15 +59,15 @@ const ProductTable = () => {
     fetchData();
   }, []);
 
-  const openModalDeleteProduct = (e) => {
-    e.preventDefault();
+  const openModalDeleteProduct = () => {
     setIsModalDeleteProductOpen(true);
   };
 
-  const deleteProduct = async () => {
+  const deleteProduct = async (e) => {
+    e.preventDefault();
     try {
       const token = getToken();
-      console.log(idProductSelected);
+      console.log("id : ", idProductSelected);
       const response = await fetch(`${url}/${idProductSelected}`, {
         method: "DELETE",
         headers: {
@@ -82,13 +80,17 @@ const ProductTable = () => {
         throw new Error("Failed to delete product");
       }
 
-      console.log("Product deleted successfully");
-      setIdProductSelected();
-      setIsModalDeleteProductOpen(false);
-      fetchData();
+      const data = await response.json();
+      if (data.status) {
+        console.log(data);
+        console.log("Product deleted successfully");
+        setIdProductSelected(null);
+        setIsModalDeleteProductOpen(false);
+        fetchData();
+      }
     } catch (error) {
       console.error("Error deleting product:", error);
-      setIdProductSelected();
+      setIdProductSelected(null);
     }
   };
 
@@ -97,6 +99,7 @@ const ProductTable = () => {
   };
 
   const openModalActions = (id) => {
+    console.log("id berubah");
     setIdProductSelected((prev) => (prev === id ? null : id));
   };
 
@@ -104,7 +107,9 @@ const ProductTable = () => {
 
   const handleClickOutside = (event) => {
     if (modalActions.current && !modalActions.current.contains(event.target)) {
-      setIdProductSelected();
+      if (!isModalDeleteProductOpen) {
+        setIdProductSelected(null);
+      }
     }
   };
 
@@ -113,17 +118,19 @@ const ProductTable = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [isModalDeleteProductOpen]);
 
   function translateAvailability(text) {
     if (text === "available") {
-        return "Tersedia";
+      return "Tersedia";
     } else if (text === "unavailable") {
-        return "Tidak Tersedia";
+      return "Tidak Tersedia";
     } else {
-        return "Teks tidak dikenali";
+      return "Teks tidak dikenali";
     }
-}
+  }
+
+  console.log(idProductSelected);
 
   return (
     <div className="overflow-x-auto">
@@ -156,7 +163,7 @@ const ProductTable = () => {
               </p>
               <div className="flex gap-9 mb-[67px]">
                 <button
-                  onClick={deleteProduct}
+                  onClick={(e) => deleteProduct(e)}
                   className="flex items-center gap-[13px] bg-primary-90 text-white rounded-lg py-3 px-6"
                 >
                   <svg
@@ -282,7 +289,7 @@ const ProductTable = () => {
                       </button>
                     </Link>
                     <button
-                      onClick={(e) => openModalDeleteProduct(e)}
+                      onClick={(e) => openModalDeleteProduct(e, idProductSelected)}
                       className="w-full px-4 py-2 hover:bg-primary-90 hover:text-white rounded-b-lg"
                     >
                       Hapus
