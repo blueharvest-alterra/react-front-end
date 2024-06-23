@@ -39,9 +39,8 @@ export default function CardTabelArtikel() {
         <table className='w-full'>
           <thead style={{ height: '31px'}} className='flex gap-5 px-2 border-b border-primary-70 items-center'>
             <th style={{ width: '60px' }} className='flex items-start text-sm font-medium'>Foto</th>
-            <th style={{ width: '235px' }} className='flex items-start text-sm font-medium'>Judul</th>
+            <th style={{ width: '300px' }} className='flex items-start text-sm font-medium'>Judul</th>
             <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Tanggal</th>
-            <th style={{ width: '100px' }} className='flex items-start text-sm font-medium'>Penulis</th>
           </thead>
           <tbody>
             {artikelData.map((artikel) => (
@@ -49,14 +48,11 @@ export default function CardTabelArtikel() {
                 <td style={{ width: '60px' }}>
                   <img src={artikel.picture} alt="" style={{ height: '40px', width: '40px' }} />
                 </td>
-                <td style={{ width: '250px' }}>
+                <td style={{ width: '300px' }}>
                   <p className='text-sm font-medium'>{artikel.title}</p>
                 </td>
-                <td style={{ width: '100px' }}>
-                  <p className='text-sm font-mediaType'>{artikel.createdAt ? new Date(artikel.createdAt).toLocaleDateString() : '-'}</p>  {/* Handle missing createdAt gracefully */}
-                </td>
-                <td style={{ width: '100px' }}>
-                  <p className='text-sm font-medium'>{artikel.author || '-'}</p>  {/* Handle missing author gracefully */}
+                <td style={{ width: '150px' }}>
+                  <p className='text-sm font-mediaType truncate'>{artikel.created_at}</p>  {/* Handle missing createdAt gracefully */}
                 </td>
               </tr>
             ))}
