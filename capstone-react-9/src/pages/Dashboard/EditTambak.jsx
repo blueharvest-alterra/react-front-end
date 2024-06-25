@@ -4,6 +4,7 @@ import axios from "axios";
 import LayoutDashboard from "../../components/LayoutDashboard/LayoutDashboard";
 import CardMonitoring from "./CardMonitoring.jsx";
 import Cookies from "js-cookie";
+import { getToken } from "../../service/accessCookie.js";
 
 const EditTambak = () => {
   const [data, setData] = useState({
@@ -20,7 +21,7 @@ const EditTambak = () => {
   const token = Cookies.get("token");
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataFarm = async () => {
       try {
         const response = await axios.get(
           `https://blueharvest.irvansn.com/v1/farms/${id}`,
@@ -45,9 +46,9 @@ const EditTambak = () => {
         console.error("Error fetching data:", error);
       }
     };
-
-    fetchData();
-  }, [id, token]);
+    fetchDataFarm();
+    fetchDataMonitoring()
+  }, []);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -153,31 +154,64 @@ const EditTambak = () => {
     setIsModalOpen(false);
   };
 
-  const [temperature, setTemperature] = useState('');
-  const [ph, setPh] = useState('');
-  const [dissolvedOxygen, setDissolvedOxygen] = useState('');
-
-  const handleSaveClick = async () => {
-    const data = {
-      farm_id: "2d5f05ec-c41b-420d-8253-b4e7606bffcb",
-      temperature: parseFloat(temperature),
-      ph: parseFloat(ph),
-      dissolved_oxygen: parseFloat(dissolvedOxygen)
-    };
-
+  const fetchDataMonitoring = async () => {
+    const token = getToken();
     try {
-      const response = await axios.put("https://blueharvest.irvansn.com/v1/farmmonitors/2d5f05ec-c41b-420d-8253-b4e7606bffcb", data,
+      const response = await axios.get(
+        `https://blueharvest.irvansn.com/v1/farmmonitors/farm/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-         );
-         console.log(response);
-      console.log('Data successfully updated:', response.data);
+      );
+      if (
+        response.data.status &&
+        response.data.data["farm-monitor"].length > 0
+      ) {
+        console.log(response.data.data["farm-monitor"][0])
+        setIdMonitoring(response.data.data["farm-monitor"][0].id)
+        setTemperature(response.data.data["farm-monitor"][0].temperature.toFixed(2))
+        setPh(response.data.data["farm-monitor"][0].ph.toFixed(2))
+        setDissolvedOxygen(response.data.data["farm-monitor"][0].dissolved_oxygen.toFixed(2))
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const [idMonitoring, setIdMonitoring] = useState()
+  const [temperature, setTemperature] = useState();
+  const [ph, setPh] = useState();
+  const [dissolvedOxygen, setDissolvedOxygen] = useState();
+
+  const handleSaveClick = async () => {
+    const token = getToken();
+    const data1 = {
+      farm_id: id,
+      temperature: parseInt(temperature),
+      ph: parseInt(ph),
+      dissolved_oxygen: parseInt(dissolvedOxygen),
+    };
+
+    try {
+      const response = await fetch(
+        `https://blueharvest.irvansn.com/v1/farmmonitors/${idMonitoring}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data1),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      fetchDataMonitoring()
       handleCloseModal();
     } catch (error) {
-      console.error('Error updating data:', error);
+      console.error("Error updating data:", error);
     }
   };
 
@@ -349,111 +383,156 @@ const EditTambak = () => {
               </form>
             </div>
 
-{/* Monitoring */}
-<div className="flex flex-col justify-items-center">
-      <div style={{ height: "275px" }} className="w-full mt-20">
-        <div className="flex flex-col">
-          <h1 className="text-[26px] font-bold ml-12 mb-2">Monitoring Tambak</h1>
-          <p className="text-[18px] ml-12 font-medium">Tersewa</p>
-          <div className="flex justify-center">
-            <CardMonitoring />
-          </div>
-        </div>
-        <div className="relative justify-end" style={{ marginTop: "-230px", marginRight: "20px" }}>
-          <button
-            type="button"
-            className="text-[#D1D5DB] hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-[#D1D5DB] dark:hover:bg-blue-500 dark:focus:ring-blue-800 absolute top-0 right-0 mt-4 mr-4"
-            onClick={handleEditClick}
-          >
-            Edit
-          </button>
-        </div>
-      </div>
+            {/* Monitoring */}
+            <div className="flex flex-col justify-items-center">
+              <div style={{ height: "275px" }} className="w-full mt-20">
+                <div className="flex flex-col">
+                  <h1 className="text-[26px] font-bold ml-12 mb-2">
+                    Monitoring Tambak
+                  </h1>
+                  <p className="text-[18px] ml-12 font-medium">Tersewa</p>
+                  <div className="flex justify-center">
+                    <CardMonitoring />
+                  </div>
+                </div>
+                <div
+                  className="relative justify-end"
+                  style={{ marginTop: "-230px", marginRight: "20px" }}
+                >
+                  <button
+                    type="button"
+                    className="text-[#D1D5DB] hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-[#D1D5DB] dark:hover:bg-blue-500 dark:focus:ring-blue-800 absolute top-0 right-0 mt-4 mr-4"
+                    onClick={handleEditClick}
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
 
-      {isModalOpen && (
-        <div id="authentication-modal" className="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-y-auto h-full bg-gray-800 bg-opacity-75">
-          <div className="relative w-full max-w-7xl p-4 max-h-full">
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
-              <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Edit Monitoring</h3>
-                <button
-                  type="button"
-                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                  onClick={handleCloseModal}
+              {isModalOpen && (
+                <div
+                  id="authentication-modal"
+                  className="fixed inset-0 z-50 flex items-center justify-center w-full p-4 overflow-y-auto h-full bg-gray-800 bg-opacity-75"
                 >
-                  <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 1" />
-                  </svg>
-                  <span className="sr-only">Close modal</span>
-                </button>
-              </div>
-              <div className="p-6 space-y-6">
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white" htmlFor="suhu-air">Suhu Air</label>
-                    <div className="flex items-center mt-1">
-                      <span className="text-gray-700 dark:text-gray-400 mr-2">°C</span>
-                      <input
-                        type="text"
-                        id="suhu-air"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Masukkan Nominal"
-                        value={temperature}
-                        onChange={(e) => setTemperature(e.target.value)}
-                      />
+                  <div className="relative w-full max-w-7xl p-4 max-h-full">
+                    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                      <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                          Edit Monitoring
+                        </h3>
+                        <button
+                          type="button"
+                          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                          onClick={handleCloseModal}
+                        >
+                          <svg
+                            className="w-3 h-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 14 14"
+                          >
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7L1 1"
+                            />
+                          </svg>
+                          <span className="sr-only">Close modal</span>
+                        </button>
+                      </div>
+                      <div className="p-6 space-y-6">
+                        <form className="space-y-4">
+                          <div>
+                            <label
+                              className="block text-sm font-medium text-gray-900 dark:text-white"
+                              htmlFor="suhu-air"
+                            >
+                              Suhu Air
+                            </label>
+                            <div className="flex items-center mt-1">
+                              <span className="text-gray-700 dark:text-gray-400 mr-2">
+                                °C
+                              </span>
+                              <input
+                                type="text"
+                                id="suhu-air"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="Masukkan Nominal"
+                                value={temperature}
+                                onChange={(e) => setTemperature(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label
+                              className="block text-sm font-medium text-gray-900 dark:text-white"
+                              htmlFor="ph-air"
+                            >
+                              PH Air
+                            </label>
+                            <div className="flex items-center mt-1">
+                              <span className="text-gray-700 dark:text-gray-400 mr-2">
+                                Ph
+                              </span>
+                              <input
+                                type="text"
+                                id="ph-air"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="Masukkan Nominal"
+                                value={ph}
+                                onChange={(e) => setPh(e.target.value)}
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label
+                              className="block text-sm font-medium text-gray-900 dark:text-white"
+                              htmlFor="oksigen-air"
+                            >
+                              Oksigen Air
+                            </label>
+                            <div className="flex items-center mt-1">
+                              <span className="text-gray-700 dark:text-gray-400 mr-3">
+                                %
+                              </span>
+                              <input
+                                type="text"
+                                id="oksigen-air"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="kadar oksigen dalam air sangat bagus"
+                                value={dissolvedOxygen}
+                                onChange={(e) =>
+                                  setDissolvedOxygen(e.target.value)
+                                }
+                              />
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                      <div className="flex justify-end items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button
+                          className="mr-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                          type="button"
+                          onClick={handleSaveClick}
+                          style={{ width: "212px" }}
+                        >
+                          Simpan
+                        </button>
+                        <button
+                          className="w-full text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:hover:border-gray-600 dark:focus:ring-blue-800"
+                          type="button"
+                          onClick={handleCloseModal}
+                          style={{ width: "212px" }}
+                        >
+                          Batal
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white" htmlFor="ph-air">PH Air</label>
-                    <div className="flex items-center mt-1">
-                      <span className="text-gray-700 dark:text-gray-400 mr-2">Ph</span>
-                      <input
-                        type="text"
-                        id="ph-air"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="Masukkan Nominal"
-                        value={ph}
-                        onChange={(e) => setPh(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white" htmlFor="oksigen-air">Oksigen Air</label>
-                    <div className="flex items-center mt-1">
-                      <span className="text-gray-700 dark:text-gray-400 mr-3">%</span>
-                      <input
-                        type="text"
-                        id="oksigen-air"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="kadar oksigen dalam air sangat bagus"
-                        value={dissolvedOxygen}
-                        onChange={(e) => setDissolvedOxygen(e.target.value)}
-                      />
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <div className="flex justify-end items-center p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-                <button
-                  className="mr-4 w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                  type="button"
-                  onClick={handleSaveClick}
-                  style={{ width: "212px" }}
-                >
-                  Simpan
-                </button>
-                <button
-                  className="w-full text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:bg-gray-600 dark:hover:border-gray-600 dark:focus:ring-blue-800"
-                  type="button"
-                  onClick={handleCloseModal}
-                  style={{ width: "212px" }}
-                >
-                  Batal
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+                </div>
               )}
             </div>
           </div>
