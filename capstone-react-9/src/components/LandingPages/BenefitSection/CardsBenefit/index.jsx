@@ -19,19 +19,19 @@ export default function CardBenefit() {
               </p>
             </div>
           </div>
-          <div className="max-w-[372px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style={{ marginLeft: '95px', marginRight: '95px'}}> 
+          <div className="max-w-[350px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" style={{ marginLeft: '95px', marginRight: '95px'}}> 
             <img className="rounded-t-lg" src={CardManfaat2} alt="card" style={{  width: '350px', height: '330px' }}/>
             <div className="p-5">
-              <h5 className="mb-2 text-[26px] font-[700] text-primary-90 dark:text-white">
+              <h5 className="text-[24px] font-[700] text-primary-90 dark:text-white">
                 Melestarikan Lingkungan
-              </h5>
-              <p className="mb-12 text-center text-[20px] font-[600] text-darker-90 dark:text-gray-400">
+              </h5>x``
+              <p className="mb-12 text-center text-[20px] font-[600] text-darker-90 dark:text-gray-400" style={{marginTop:"-15px"}}>
                 Menjaga Keseimbangan Alam
               </p>
             </div>
           </div>
-          <div className="max-w-[372px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"> 
-            <img className="rounded-t-lg " src={CardManfaat3} alt="card" style={{  width: '361px', height: '330px' }}/>
+          <div className="max-w-[350px] max-h-[491px] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"> 
+            <img className="rounded-t-lg " src={CardManfaat3} alt="card" style={{  width: '350px', height: '330px' }}/>
             <div className="p-5">
               <h5 className="mb-2 text-[26px] font-[700] text-primary-90 dark:text-white">
                 Penggerak Ekonomi
