@@ -4,15 +4,17 @@ import LogoAir from '../../assets/logo-air.svg';
 import LogoOksigen from "../../assets/logo-oksigen.svg";
 import LogoSuhu from "../../assets/logo-suhu.svg";
 import { getToken } from '../../service/accessCookie';
+import { useParams } from "react-router-dom";
 
 export default function CardMonitoring() {
   const [data, setData] = useState(null);
+  const {id} = useParams()
 
   useEffect(() => {
     const fetchData = async () => {
       const token = getToken();
       try {
-        const response = await axios.get("https://blueharvest.irvansn.com/v1/farmmonitors/farm/2d5f05ec-c41b-420d-8253-b4e7606bffcb", {
+        const response = await axios.get(`https://blueharvest.irvansn.com/v1/farmmonitors/farm/${id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

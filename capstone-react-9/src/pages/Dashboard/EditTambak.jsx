@@ -4,6 +4,7 @@ import axios from "axios";
 import LayoutDashboard from "../../components/LayoutDashboard/LayoutDashboard";
 import CardMonitoring from "./CardMonitoring.jsx";
 import Cookies from "js-cookie";
+import { getToken } from "../../service/accessCookie.js";
 
 const EditTambak = () => {
   const [data, setData] = useState({
@@ -158,23 +159,35 @@ const EditTambak = () => {
   const [dissolvedOxygen, setDissolvedOxygen] = useState('');
 
   const handleSaveClick = async () => {
-    const data = {
+    const token = getToken()
+    const data1 = {
       farm_id: "2d5f05ec-c41b-420d-8253-b4e7606bffcb",
-      temperature: parseFloat(temperature),
-      ph: parseFloat(ph),
-      dissolved_oxygen: parseFloat(dissolvedOxygen)
+      temperature: 12,
+      ph: 12,
+      dissolved_oxygen: 12
     };
 
     try {
-      const response = await axios.put("https://blueharvest.irvansn.com/v1/farmmonitors/2d5f05ec-c41b-420d-8253-b4e7606bffcb", data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-         );
-         console.log(response);
-      console.log('Data successfully updated:', response.data);
+      // const response = await axios.put('https://blueharvest.irvansn.com/v1/farmmonitors/2d5f05ec-c41b-420d-8253-b4e7606bffcb', data,
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      //    );
+      //    console.log(response);
+      // console.log('Data successfully updated:', response.data);
+      const response = await fetch("https://blueharvest.irvansn.com/v1/farmmonitors/a4ff2278-f9ef-4870-9d8f-de32bebe4cae", {
+        method: 'PUT',
+        headers:{
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(data1)
+      })
+      const data = await response.json()
+      console.log(data)
+
       handleCloseModal();
     } catch (error) {
       console.error('Error updating data:', error);
