@@ -1,13 +1,10 @@
-import React from 'react'
-import HeroSection from '../../components/HeroSection/HeroSection'
-import Footer from '../../components/Footer/Footer'
-
+import React from "react";
+import LandingPage from "../../components/LandingPages/index";
 
 export default function HomePage() {
   return (
-    <div>HomePage
-        <HeroSection/>
-        <Footer/>
-    </div>
-  )
+    <>
+    <LandingPage/>
+    </>
+  );
 }
